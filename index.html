@@ -34,7 +34,6 @@
     min-height: 100vh;
   }
 
-  /* Header */
   .header {
     background: linear-gradient(135deg, var(--navy-dark) 0%, var(--navy) 50%, var(--navy-light) 100%);
     color: var(--white);
@@ -103,16 +102,21 @@
     box-shadow: 0 3px 12px rgba(201,169,110,0.4);
   }
 
-  /* Main container */
-  .container {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 2rem 1rem;
-  }
+  .container { max-width: 800px; margin: 0 auto; padding: 2rem 1rem; }
 
-  /* Category sections */
   .category {
     margin-bottom: 2.5rem;
+    background: var(--white);
+    border-radius: 16px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 8px rgba(27,42,74,0.08);
+    border: 1px solid rgba(201,169,110,0.2);
+    transition: border-color 0.3s, background 0.3s;
+  }
+
+  .category.claimed {
+    background: var(--claimed-bg);
+    border-color: var(--success);
   }
 
   .category-header {
@@ -149,145 +153,103 @@
     font-weight: 400;
   }
 
-  /* Product cards */
-  .product-card {
-    background: var(--white);
-    border-radius: 12px;
-    padding: 1.25rem;
-    margin-bottom: 1rem;
-    box-shadow: 0 2px 8px rgba(27,42,74,0.08);
-    border: 1px solid rgba(201,169,110,0.2);
-    transition: transform 0.2s, box-shadow 0.2s;
-    position: relative;
+  .option-card {
+    background: var(--cream);
+    border-radius: 10px;
+    padding: 1rem;
+    margin-bottom: 0.75rem;
+    border: 1px solid rgba(201,169,110,0.1);
   }
 
-  .product-card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 16px rgba(27,42,74,0.12);
-  }
+  .option-card:last-of-type { margin-bottom: 1rem; }
 
-  .product-card.claimed {
-    background: var(--claimed-bg);
-    border-color: var(--success);
-  }
-
-  .claimed-badge {
-    display: inline-block;
-    background: var(--success);
-    color: var(--white);
-    padding: 0.2rem 0.6rem;
-    border-radius: 4px;
-    font-size: 0.8rem;
-    font-weight: 600;
-    margin-bottom: 0.5rem;
-  }
-
-  .product-name {
+  .option-name {
     font-family: 'Noto Serif TC', serif;
-    font-size: 1.05rem;
+    font-size: 1rem;
     font-weight: 600;
     color: var(--navy);
     margin-bottom: 0.25rem;
   }
 
-  .product-specs {
+  .option-specs {
     font-size: 0.85rem;
     color: var(--text-light);
+    margin-bottom: 0.25rem;
+  }
+
+  .option-price {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--gold-dark);
     margin-bottom: 0.5rem;
   }
 
-  .product-price {
-    font-size: 1.1rem;
-    font-weight: 700;
-    color: var(--gold-dark);
-    margin-bottom: 0.75rem;
-  }
-
-  .product-price .original-price {
-    text-decoration: line-through;
-    color: var(--text-light);
-    font-weight: 400;
-    font-size: 0.9rem;
-    margin-left: 0.5rem;
-  }
-
-  /* Links / buttons row */
-  .link-buttons {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-    margin-bottom: 0.75rem;
-  }
+  .link-buttons { display: flex; flex-wrap: wrap; gap: 0.4rem; }
 
   .btn-link {
     display: inline-flex;
     align-items: center;
     gap: 0.3rem;
-    padding: 0.4rem 0.75rem;
+    padding: 0.35rem 0.65rem;
     background: var(--navy);
     color: var(--white);
     text-decoration: none;
-    border-radius: 6px;
-    font-size: 0.8rem;
+    border-radius: 5px;
+    font-size: 0.75rem;
     font-weight: 500;
     transition: background 0.2s;
   }
-
   .btn-link:hover { background: var(--navy-light); }
-
-  .btn-link.fortress { background: #E31E24; }
-  .btn-link.fortress:hover { background: #C41A1F; }
-
-  .btn-link.broadway { background: #0056A0; }
-  .btn-link.broadway:hover { background: #003F7A; }
-
-  .btn-link.sce { background: #FF6B00; }
-  .btn-link.sce:hover { background: #E05F00; }
-
-  .btn-link.fever { background: #6B3FA0; }
-  .btn-link.fever:hover { background: #5A308A; }
-
-  .btn-link.yoho { background: #00843D; }
-  .btn-link.yoho:hover { background: #006B31; }
-
-  .btn-link.hktvmall { background: #FF6600; }
-  .btn-link.hktvmall:hover { background: #E55C00; }
-
-  .btn-link.hitachi { background: #E60012; }
-  .btn-link.hitachi:hover { background: #C5000F; }
-
-  .btn-link.domeo { background: #0072BC; }
-  .btn-link.domeo:hover { background: #005A96; }
-
-  .btn-link.hke { background: #00AEEF; }
-  .btn-link.hke:hover { background: #0095CC; }
-
   .btn-link.ikea { background: #0058A3; }
   .btn-link.ikea:hover { background: #004485; }
-
+  .btn-link.fortress { background: #E31E24; }
+  .btn-link.fortress:hover { background: #C41A1F; }
+  .btn-link.broadway { background: #0056A0; }
+  .btn-link.broadway:hover { background: #003F7A; }
+  .btn-link.sce { background: #FF6B00; }
+  .btn-link.sce:hover { background: #E05F00; }
+  .btn-link.fever { background: #6B3FA0; }
+  .btn-link.fever:hover { background: #5A308A; }
+  .btn-link.yoho { background: #00843D; }
+  .btn-link.yoho:hover { background: #006B31; }
+  .btn-link.hktvmall { background: #FF6600; }
+  .btn-link.hktvmall:hover { background: #E55C00; }
+  .btn-link.hitachi { background: #E60012; }
+  .btn-link.hitachi:hover { background: #C5000F; }
+  .btn-link.domeo { background: #0072BC; }
+  .btn-link.domeo:hover { background: #005A96; }
+  .btn-link.hke { background: #00AEEF; }
+  .btn-link.hke:hover { background: #0095CC; }
   .btn-link.builtinpro { background: #2C3E50; }
   .btn-link.builtinpro:hover { background: #1A252F; }
-
   .btn-link.pricecom { background: #FF4500; }
   .btn-link.pricecom:hover { background: #CC3700; }
-
   .btn-link.tefal { background: #C8102E; }
   .btn-link.tefal:hover { background: #A00D25; }
-
   .btn-link.panasonic { background: #0064B0; }
   .btn-link.panasonic:hover { background: #004D88; }
 
-  /* Claim button */
+  .category-claim-area {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 0.5rem;
+    padding-top: 1rem;
+    border-top: 1px dashed rgba(201,169,110,0.3);
+  }
+
   .btn-claim {
     display: inline-flex;
     align-items: center;
     gap: 0.4rem;
-    padding: 0.55rem 1.2rem;
+    padding: 0.6rem 1.5rem;
     background: linear-gradient(135deg, var(--gold) 0%, var(--gold-dark) 100%);
     color: var(--white);
     border: none;
     border-radius: 8px;
-    font-size: 0.95rem;
+    font-size: 1rem;
     font-weight: 700;
     font-family: 'Noto Sans TC', sans-serif;
     cursor: pointer;
@@ -295,21 +257,27 @@
     letter-spacing: 0.05em;
     text-decoration: none;
   }
-
   .btn-claim:hover {
     transform: scale(1.03);
     box-shadow: 0 3px 12px rgba(201,169,110,0.4);
   }
-
   .btn-claim:active { transform: scale(0.98); }
-
   .btn-claim.claimed-btn {
     background: var(--success);
     cursor: default;
     pointer-events: none;
   }
 
-  /* Loading indicator */
+  .claim-info {
+    font-size: 0.9rem;
+    color: var(--text-light);
+  }
+
+  .claim-info.claimed-text {
+    color: var(--success);
+    font-weight: 600;
+  }
+
   .loading-bar {
     text-align: center;
     padding: 0.5rem;
@@ -321,7 +289,6 @@
   }
   .loading-bar.hidden { display: none; }
 
-  /* Footer */
   .footer {
     text-align: center;
     padding: 2rem 1rem;
@@ -331,32 +298,30 @@
     font-size: 1.1rem;
     margin-top: 2rem;
   }
-
   .footer .heart { color: #E74C3C; }
 
-  /* Responsive */
   @media (max-width: 600px) {
     .header h1 { font-size: 1.8rem; }
     .header .subtitle { font-size: 0.95rem; }
     .container { padding: 1.5rem 0.75rem; }
+    .category { padding: 1rem; }
     .category-title { font-size: 1.15rem; }
-    .product-card { padding: 1rem; }
-    .link-buttons { gap: 0.4rem; }
-    .btn-link { font-size: 0.75rem; padding: 0.35rem 0.6rem; }
-    .btn-claim { font-size: 0.85rem; padding: 0.45rem 1rem; }
+    .category-claim-area { flex-direction: column; align-items: flex-start; }
+    .link-buttons { gap: 0.35rem; }
+    .btn-link { font-size: 0.7rem; padding: 0.3rem 0.5rem; }
+    .btn-claim { font-size: 0.9rem; padding: 0.5rem 1.2rem; }
   }
 </style>
 </head>
 <body>
 
-<!-- Header -->
 <header class="header">
   <div class="header-content">
     <h1>承恩 & 麗娟</h1>
     <div class="subtitle">新婚禮品清單</div>
     <div class="heart-divider">♥ ♥ ♥</div>
     <p class="intro">感謝大家的祝福！以下是我們新居需要的禮物清單，歡迎認購任何一項，心意最珍貴 ❤️</p>
-    <a href="https://docs.google.com/forms/d/e/1FAIpQLSdGp-uLkdnlIM1CvZQyvf7niSyvtxGwEdmjl-PZhmdk1h-W6g/viewform" target="_blank" class="btn-form">📝 填寫認購表單</a>
+    <a href="FORM_URL" target="_blank" class="btn-form">📝 填寫認購表單</a>
   </div>
 </header>
 
@@ -364,7 +329,7 @@
   <div class="loading-bar" id="loading">⏳ 載入認購資料中...</div>
 
   <!-- 1. 沙發 -->
-  <section class="category">
+  <section class="category" data-gift="沙發">
     <div class="category-header">
       <div class="category-icon">🛋️</div>
       <div>
@@ -373,29 +338,32 @@
       </div>
     </div>
 
-    <div class="product-card" data-gift="沙發">
-      <div class="product-name">IKEA KIVIK 雙人沙發</div>
-      <div class="product-specs">Tibbleby 米色/灰色</div>
-      <div class="product-price">HK$3,199</div>
+    <div class="option-card">
+      <div class="option-name">IKEA KIVIK 雙人沙發</div>
+      <div class="option-specs">Tibbleby 米色/灰色</div>
+      <div class="option-price">HK$3,199</div>
       <div class="link-buttons">
         <a href="https://www.ikea.com.hk/en/products/sofas-and-armchairs/sofas/kivik-spr-19440594" target="_blank" rel="noopener" class="btn-link ikea">🔗 IKEA</a>
       </div>
-      <a class="btn-claim" href="https://docs.google.com/forms/d/e/1FAIpQLSdGp-uLkdnlIM1CvZQyvf7niSyvtxGwEdmjl-PZhmdk1h-W6g/viewform" target="_blank">🎁 我要認購</a>
     </div>
 
-    <div class="product-card" data-gift="沙發">
-      <div class="product-name">IKEA KIVIK 雙人沙發</div>
-      <div class="product-specs">Gunnared 淺綠色</div>
-      <div class="product-price">HK$3,499</div>
+    <div class="option-card">
+      <div class="option-name">IKEA KIVIK 雙人沙發</div>
+      <div class="option-specs">Gunnared 淺綠色</div>
+      <div class="option-price">HK$3,499</div>
       <div class="link-buttons">
         <a href="https://www.ikea.com.hk/en/products/sofas-and-armchairs/sofas/kivik-spr-59484864" target="_blank" rel="noopener" class="btn-link ikea">🔗 IKEA</a>
       </div>
-      <a class="btn-claim" href="https://docs.google.com/forms/d/e/1FAIpQLSdGp-uLkdnlIM1CvZQyvf7niSyvtxGwEdmjl-PZhmdk1h-W6g/viewform" target="_blank">🎁 我要認購</a>
+    </div>
+
+    <div class="category-claim-area">
+      <span class="claim-info">選擇你喜歡的款式，點擊認購 ↓</span>
+      <a class="btn-claim" href="FORM_URL" target="_blank">🎁 我要認購</a>
     </div>
   </section>
 
   <!-- 2. 床架 -->
-  <section class="category">
+  <section class="category" data-gift="床架">
     <div class="category-header">
       <div class="category-icon">🛏️</div>
       <div>
@@ -404,29 +372,32 @@
       </div>
     </div>
 
-    <div class="product-card" data-gift="床架">
-      <div class="product-name">IKEA MALM 高架床架</div>
-      <div class="product-specs">附 2 個儲物盒，白色</div>
-      <div class="product-price">HK$2,499</div>
+    <div class="option-card">
+      <div class="option-name">IKEA MALM 高架床架</div>
+      <div class="option-specs">附 2 個儲物盒，白色</div>
+      <div class="option-price">HK$2,499</div>
       <div class="link-buttons">
         <a href="https://www.ikea.com.hk/en/products/beds/double-beds/malm-bed-frame-high-w-2-storage-boxes-spr-19077324" target="_blank" rel="noopener" class="btn-link ikea">🔗 IKEA</a>
       </div>
-      <a class="btn-claim" href="https://docs.google.com/forms/d/e/1FAIpQLSdGp-uLkdnlIM1CvZQyvf7niSyvtxGwEdmjl-PZhmdk1h-W6g/viewform" target="_blank">🎁 我要認購</a>
     </div>
 
-    <div class="product-card" data-gift="床架">
-      <div class="product-name">IKEA SLATTUM 軟包床架</div>
-      <div class="product-specs">Knisa 淺灰色，5 尺（Double）</div>
-      <div class="product-price">~HK$1,999</div>
+    <div class="option-card">
+      <div class="option-name">IKEA SLATTUM 軟包床架</div>
+      <div class="option-specs">Knisa 淺灰色，5 尺（Double）</div>
+      <div class="option-price">~HK$1,999</div>
       <div class="link-buttons">
         <a href="https://www.ikea.com.hk/en/products/beds/upholstered-beds/slattum-upholstered-bed-frame-knisa-light-grey-spr-89347921" target="_blank" rel="noopener" class="btn-link ikea">🔗 IKEA</a>
       </div>
-      <a class="btn-claim" href="https://docs.google.com/forms/d/e/1FAIpQLSdGp-uLkdnlIM1CvZQyvf7niSyvtxGwEdmjl-PZhmdk1h-W6g/viewform" target="_blank">🎁 我要認購</a>
+    </div>
+
+    <div class="category-claim-area">
+      <span class="claim-info">選擇你喜歡的款式，點擊認購 ↓</span>
+      <a class="btn-claim" href="FORM_URL" target="_blank">🎁 我要認購</a>
     </div>
   </section>
 
   <!-- 3. 衣櫃 -->
-  <section class="category">
+  <section class="category" data-gift="衣櫃">
     <div class="category-header">
       <div class="category-icon">🚪</div>
       <div>
@@ -435,29 +406,32 @@
       </div>
     </div>
 
-    <div class="product-card" data-gift="衣櫃">
-      <div class="product-name">IKEA PAX 衣櫃組合</div>
-      <div class="product-specs">150 × 66 × 236.4 cm</div>
-      <div class="product-price">HK$2,499 起</div>
+    <div class="option-card">
+      <div class="option-name">IKEA PAX 衣櫃組合</div>
+      <div class="option-specs">150 × 66 × 236.4 cm</div>
+      <div class="option-price">HK$2,499 起</div>
       <div class="link-buttons">
         <a href="https://www.ikea.com.hk/en/products/wardrobes-and-chest-of-drawers/system-wardrobes/pax-spr-29306316" target="_blank" rel="noopener" class="btn-link ikea">🔗 IKEA</a>
       </div>
-      <a class="btn-claim" href="https://docs.google.com/forms/d/e/1FAIpQLSdGp-uLkdnlIM1CvZQyvf7niSyvtxGwEdmjl-PZhmdk1h-W6g/viewform" target="_blank">🎁 我要認購</a>
     </div>
 
-    <div class="product-card" data-gift="衣櫃">
-      <div class="product-name">IKEA KLEPPSTAD 衣櫃</div>
-      <div class="product-specs">白色，149 × 55 × 176 cm，2 門</div>
-      <div class="product-price">~HK$999</div>
+    <div class="option-card">
+      <div class="option-name">IKEA KLEPPSTAD 衣櫃</div>
+      <div class="option-specs">白色，149 × 55 × 176 cm，2 門</div>
+      <div class="option-price">~HK$999</div>
       <div class="link-buttons">
         <a href="https://www.ikea.com.hk/en/products/wardrobes-and-chest-of-drawers/wardrobes/kleppstad-wardrobe-white-spr-70391334" target="_blank" rel="noopener" class="btn-link ikea">🔗 IKEA</a>
       </div>
-      <a class="btn-claim" href="https://docs.google.com/forms/d/e/1FAIpQLSdGp-uLkdnlIM1CvZQyvf7niSyvtxGwEdmjl-PZhmdk1h-W6g/viewform" target="_blank">🎁 我要認購</a>
+    </div>
+
+    <div class="category-claim-area">
+      <span class="claim-info">選擇你喜歡的款式，點擊認購 ↓</span>
+      <a class="btn-claim" href="FORM_URL" target="_blank">🎁 我要認購</a>
     </div>
   </section>
 
   <!-- 4. 冰箱 -->
-  <section class="category">
+  <section class="category" data-gift="冰箱">
     <div class="category-header">
       <div class="category-icon">🧊</div>
       <div>
@@ -466,10 +440,10 @@
       </div>
     </div>
 
-    <div class="product-card" data-gift="冰箱">
-      <div class="product-name">Mitsubishi MR-CGX33EY-GBK 三門變頻雪櫃</div>
-      <div class="product-specs">330L / 玻璃面 / 指定型號</div>
-      <div class="product-price">~HK$6,000 – 7,990</div>
+    <div class="option-card">
+      <div class="option-name">Mitsubishi MR-CGX33EY-GBK 三門變頻雪櫃</div>
+      <div class="option-specs">330L / 玻璃面 / 指定型號</div>
+      <div class="option-price">~HK$6,000 – 7,990</div>
       <div class="link-buttons">
         <a href="https://www.fortress.com.hk/en/shop/major-appliances/refrigerator/3-door-refrigerator/c/414" target="_blank" rel="noopener" class="btn-link fortress">🏬 Fortress</a>
         <a href="https://www.broadwaylifestyle.com/products/mr-cgx33ey-三門變頻環保雪櫃" target="_blank" rel="noopener" class="btn-link broadway">🏬 Broadway</a>
@@ -477,12 +451,16 @@
         <a href="https://fever.com.hk/collections/refrigerators" target="_blank" rel="noopener" class="btn-link fever">🏬 Fever Electric</a>
         <a href="https://www.yohohongkong.com/zh-hk" target="_blank" rel="noopener" class="btn-link yoho">🏬 YOHO</a>
       </div>
-      <a class="btn-claim" href="https://docs.google.com/forms/d/e/1FAIpQLSdGp-uLkdnlIM1CvZQyvf7niSyvtxGwEdmjl-PZhmdk1h-W6g/viewform" target="_blank">🎁 我要認購</a>
+    </div>
+
+    <div class="category-claim-area">
+      <span class="claim-info">選擇你喜歡的購買渠道，點擊認購 ↓</span>
+      <a class="btn-claim" href="FORM_URL" target="_blank">🎁 我要認購</a>
     </div>
   </section>
 
   <!-- 5. 洗衣機 -->
-  <section class="category">
+  <section class="category" data-gift="洗衣機">
     <div class="category-header">
       <div class="category-icon">🫧</div>
       <div>
@@ -491,22 +469,26 @@
       </div>
     </div>
 
-    <div class="product-card" data-gift="洗衣機">
-      <div class="product-name">HITACHI 日立 LTL-065SM00 日式洗衣機</div>
-      <div class="product-specs">6.5 公斤 / 830 轉 / 5S 極細系列（指定型號）</div>
-      <div class="product-price">~HK$1,850 – 1,910</div>
+    <div class="option-card">
+      <div class="option-name">HITACHI 日立 LTL-065SM00 日式洗衣機</div>
+      <div class="option-specs">6.5 公斤 / 830 轉 / 5S 極細系列（指定型號）</div>
+      <div class="option-price">~HK$1,850 – 1,910</div>
       <div class="link-buttons">
         <a href="https://www.fortress.com.hk/zh-hk/product/5s極細系列-6.5公斤830轉日式洗衣機-ltl065sm00/p/BP_14013857" target="_blank" rel="noopener" class="btn-link fortress">🏬 Fortress</a>
         <a href="https://www.yohohongkong.com/zh-hk/product/253139" target="_blank" rel="noopener" class="btn-link yoho">🏬 YOHO</a>
         <a href="https://www.hktvmall.com/zh" target="_blank" rel="noopener" class="btn-link hktvmall">🏬 HKTVmall</a>
         <a href="https://www.hitachi-homeappliances.com.hk/tc/products/ltl-065sm00.html" target="_blank" rel="noopener" class="btn-link hitachi">🏬 Hitachi 官方</a>
       </div>
-      <a class="btn-claim" href="https://docs.google.com/forms/d/e/1FAIpQLSdGp-uLkdnlIM1CvZQyvf7niSyvtxGwEdmjl-PZhmdk1h-W6g/viewform" target="_blank">🎁 我要認購</a>
+    </div>
+
+    <div class="category-claim-area">
+      <span class="claim-info">選擇你喜歡的購買渠道，點擊認購 ↓</span>
+      <a class="btn-claim" href="FORM_URL" target="_blank">🎁 我要認購</a>
     </div>
   </section>
 
   <!-- 6. 微波烤箱 -->
-  <section class="category">
+  <section class="category" data-gift="微波烤箱">
     <div class="category-header">
       <div class="category-icon">🍳</div>
       <div>
@@ -515,21 +497,25 @@
       </div>
     </div>
 
-    <div class="product-card" data-gift="微波烤箱">
-      <div class="product-name">Toshiba MW3-SAC24SE 多功能微波烤箱</div>
-      <div class="product-specs">24L / 智能多機能烤箱 / 健康氣炸（指定型號）</div>
-      <div class="product-price">~HK$1,320 – 1,680</div>
+    <div class="option-card">
+      <div class="option-name">Toshiba MW3-SAC24SE 多功能微波烤箱</div>
+      <div class="option-specs">24L / 智能多功能烤箱 / 健康氣炸（指定型號）</div>
+      <div class="option-price">~HK$1,320 – 1,680</div>
       <div class="link-buttons">
         <a href="https://www.fortress.com.hk/en/product/mw3-sac24se-24l-multi-function-oven-with-healthy-air-fry/p/BP_13137284" target="_blank" rel="noopener" class="btn-link fortress">🏬 Fortress</a>
         <a href="https://www.clpdomeo.com/en/mw3-sac24se-bk-24l-smart-multi-function-oven-with-air-fry-black" target="_blank" rel="noopener" class="btn-link domeo">🏬 CLP DOMEO</a>
         <a href="https://hkele.com.hk/en/MW3-SAC24SE-BK-" target="_blank" rel="noopener" class="btn-link hke">🏬 HK Electric</a>
       </div>
-      <a class="btn-claim" href="https://docs.google.com/forms/d/e/1FAIpQLSdGp-uLkdnlIM1CvZQyvf7niSyvtxGwEdmjl-PZhmdk1h-W6g/viewform" target="_blank">🎁 我要認購</a>
+    </div>
+
+    <div class="category-claim-area">
+      <span class="claim-info">選擇你喜歡的購買渠道，點擊認購 ↓</span>
+      <a class="btn-claim" href="FORM_URL" target="_blank">🎁 我要認購</a>
     </div>
   </section>
 
   <!-- 7. 抽濕機 -->
-  <section class="category">
+  <section class="category" data-gift="抽濕機">
     <div class="category-header">
       <div class="category-icon">💧</div>
       <div>
@@ -538,30 +524,33 @@
       </div>
     </div>
 
-    <div class="product-card" data-gift="抽濕機">
-      <div class="product-name">Carrier 開利 DC-22VSB 抽濕機</div>
-      <div class="product-specs">指定型號</div>
-      <div class="product-price">~HK$3,279</div>
+    <div class="option-card">
+      <div class="option-name">Carrier 開利 DC-22VSB 抽濕機</div>
+      <div class="option-specs">指定型號</div>
+      <div class="option-price">~HK$3,279</div>
       <div class="link-buttons">
         <a href="https://www.builtinpro.hk/dc-22vsb" target="_blank" rel="noopener" class="btn-link builtinpro">🏬 Built-in Pro</a>
         <a href="https://www.price.com.hk/product.php?p=605031" target="_blank" rel="noopener" class="btn-link pricecom">🏬 Price.com.hk</a>
       </div>
-      <a class="btn-claim" href="https://docs.google.com/forms/d/e/1FAIpQLSdGp-uLkdnlIM1CvZQyvf7niSyvtxGwEdmjl-PZhmdk1h-W6g/viewform" target="_blank">🎁 我要認購</a>
     </div>
 
-    <div class="product-card" data-gift="抽濕機">
-      <div class="product-name">Panasonic F-Y24EH 抽濕機</div>
-      <div class="product-specs">替代選項</div>
-      <div class="product-price">~HK$2,680</div>
+    <div class="option-card">
+      <div class="option-name">Panasonic F-Y24EH 抽濕機</div>
+      <div class="option-specs">替代選項</div>
+      <div class="option-price">~HK$2,680</div>
       <div class="link-buttons">
         <a href="https://www.panasonic.com/hk/consumer/home-appliances/dehumidifiers.html" target="_blank" rel="noopener" class="btn-link panasonic">🏬 Panasonic</a>
       </div>
-      <a class="btn-claim" href="https://docs.google.com/forms/d/e/1FAIpQLSdGp-uLkdnlIM1CvZQyvf7niSyvtxGwEdmjl-PZhmdk1h-W6g/viewform" target="_blank">🎁 我要認購</a>
+    </div>
+
+    <div class="category-claim-area">
+      <span class="claim-info">選擇你喜歡的型號和購買渠道，點擊認購 ↓</span>
+      <a class="btn-claim" href="FORM_URL" target="_blank">🎁 我要認購</a>
     </div>
   </section>
 
   <!-- 8. Tefal 慳位廚具 -->
-  <section class="category">
+  <section class="category" data-gift="Tefal 慳位廚具">
     <div class="category-header">
       <div class="category-icon">🍲</div>
       <div>
@@ -570,31 +559,32 @@
       </div>
     </div>
 
-    <div class="product-card" data-gift="Tefal 慳位廚具">
-      <div class="product-name">Tefal Ingenio 系列廚具（Fortress）</div>
-      <div class="product-specs">可摺疊手柄 / 慳位收納</div>
-      <div class="product-price">視乎套裝</div>
+    <div class="option-card">
+      <div class="option-name">Tefal Ingenio 系列廚具（Fortress）</div>
+      <div class="option-specs">可摺疊手柄 / 慳位收納 / 視乎套裝</div>
+      <div class="option-price">視乎套裝</div>
       <div class="link-buttons">
         <a href="https://www.fortress.com.hk/zh-hk/brands/171430/tefal" target="_blank" rel="noopener" class="btn-link fortress">🏬 Fortress</a>
       </div>
-      <a class="btn-claim" href="https://docs.google.com/forms/d/e/1FAIpQLSdGp-uLkdnlIM1CvZQyvf7niSyvtxGwEdmjl-PZhmdk1h-W6g/viewform" target="_blank">🎁 我要認購</a>
     </div>
 
-    <div class="product-card" data-gift="Tefal 慳位廚具">
-      <div class="product-name">Tefal 官方旗艦店</div>
-      <div class="product-specs">Ingenio 系列 / 全套裝選購</div>
-      <div class="product-price">視乎套裝</div>
+    <div class="option-card">
+      <div class="option-name">Tefal 官方旗艦店 Ingenio 系列</div>
+      <div class="option-specs">全套裝選購 / 視乎套裝</div>
+      <div class="option-price">視乎套裝</div>
       <div class="link-buttons">
         <a href="https://www.tefal.com.hk" target="_blank" rel="noopener" class="btn-link tefal">🏬 Tefal 官方</a>
         <a href="https://www.price.com.hk/search?q=tefal" target="_blank" rel="noopener" class="btn-link pricecom">🏬 Price.com.hk</a>
       </div>
-      <a class="btn-claim" href="https://docs.google.com/forms/d/e/1FAIpQLSdGp-uLkdnlIM1CvZQyvf7niSyvtxGwEdmjl-PZhmdk1h-W6g/viewform" target="_blank">🎁 我要認購</a>
+    </div>
+
+    <div class="category-claim-area">
+      <span class="claim-info">選擇你喜歡的套裝和購買渠道，點擊認購 ↓</span>
+      <a class="btn-claim" href="FORM_URL" target="_blank">🎁 我要認購</a>
     </div>
   </section>
-
 </main>
 
-<!-- Footer -->
 <footer class="footer">
   承恩 & 麗娟 <span class="heart">❤️</span> 多謝大家的祝福
 </footer>
@@ -602,168 +592,107 @@
 <script>
 (function() {
   'use strict';
+  const FORM_ID = '1FAIpQLSdGp-uLkdnlIM1CvZQyvf7niSyvtxGwEdmjl-PZhmdk1h-W6g';
+  const SHEET_ID = '1kqfMw6StVhgJ-c3VN7JLDCmuhOMZZ7moMZbGauNs5cA';
+  const FORM_URL = 'https://docs.google.com/forms/d/e/' + FORM_ID + '/viewform';
+  const SHEET_CSV = 'https://docs.google.com/spreadsheets/d/' + SHEET_ID + '/gviz/tq?tqx=out:csv&sheet=Form%20Responses%201';
+  const loadingEl = document.getElementById('loading');
 
-  const GOOGLE_SHEET_CSV = 'https://docs.google.com/spreadsheets/d/1kqfMw6StVhgJ-c3VN7JLDCmuhOMZZ7moMZbGauNs5cA/gviz/tq?tqx=out:csv&sheet=Form+Responses+1';
-  const GOOGLE_FORM_URL = 'https://docs.google.com/forms/d/e/1FAIpQLSdGp-uLkdnlIM1CvZQyvf7niSyvtxGwEdmjl-PZhmdk1h-W6g/viewform';
+  // Update all FORM_URL placeholders
+  document.querySelectorAll('a[href="FORM_URL"]').forEach(a => a.href = FORM_URL);
 
-  // Parse CSV line handling quoted fields
-  function parseCSVLine(line) {
-    const result = [];
-    let current = '';
-    let inQuotes = false;
-    for (let i = 0; i < line.length; i++) {
-      const ch = line[i];
+  function parseCSV(text) {
+    const rows = [];
+    let row = [], cell = '', inQuotes = false;
+    for (let i = 0; i < text.length; i++) {
+      const ch = text[i];
       if (inQuotes) {
         if (ch === '"') {
-          if (i + 1 < line.length && line[i + 1] === '"') {
-            current += '"';
-            i++;
-          } else {
-            inQuotes = false;
-          }
-        } else {
-          current += ch;
-        }
+          if (i + 1 < text.length && text[i + 1] === '"') {
+            cell += '"'; i++;
+          } else { inQuotes = false; }
+        } else { cell += ch; }
       } else {
-        if (ch === '"') {
-          inQuotes = true;
-        } else if (ch === ',') {
-          result.push(current.trim());
-          current = '';
-        } else {
-          current += ch;
-        }
+        if (ch === '"') { inQuotes = true; }
+        else if (ch === ',') { row.push(cell); cell = ''; }
+        else if (ch === '\n') { row.push(cell); cell = ''; rows.push(row); row = []; }
+        else { cell += ch; }
       }
     }
-    result.push(current.trim());
-    return result;
+    if (cell || row.length) { row.push(cell); rows.push(row); }
+    return rows;
   }
 
-  // Fetch claimed items from Google Sheet
-  function fetchClaimedData(callback) {
-    fetch(GOOGLE_SHEET_CSV)
-      .then(function(response) {
-        if (!response.ok) throw new Error('Network error: ' + response.status);
-        return response.text();
-      })
-      .then(function(csvText) {
-        const lines = csvText.split('\n').filter(function(l) { return l.trim().length > 0; });
-        if (lines.length < 2) {
-          callback([]);
-          return;
-        }
-
-        // First line is header
-        const header = parseCSVLine(lines[0]);
-        // Find column indices
-        var giftCol = -1, nameCol = -1;
-        for (var i = 0; i < header.length; i++) {
-          var h = header[i].toLowerCase();
-          if (h.indexOf('你要認購') >= 0 || h.indexOf('禮物') >= 0 || h.indexOf('gift') >= 0) giftCol = i;
-          if (h.indexOf('你嘅名字') >= 0 || h.indexOf('你的名字') >= 0 || h.indexOf('name') >= 0) nameCol = i;
-        }
-
-        // Fallback: assume col 1 = gift, col 2 = name
-        if (giftCol < 0) giftCol = 1;
-        if (nameCol < 0) nameCol = 2;
-
-        var claimed = [];
-        for (var j = 1; j < lines.length; j++) {
-          var fields = parseCSVLine(lines[j]);
-          var gift = (fields[giftCol] || '').trim();
-          var name = (fields[nameCol] || '').trim();
-          if (gift && name) {
-            claimed.push({ gift: gift, name: name });
+  function loadClaims() {
+    fetch(SHEET_CSV)
+      .then(r => r.text())
+      .then(text => {
+        const rows = parseCSV(text);
+        const claims = {};
+        // Skip header row, read gift name (col 1) and name (col 2)
+        for (let i = 1; i < rows.length; i++) {
+          const row = rows[i];
+          if (row.length >= 3 && row[1] && row[2]) {
+            const gift = row[1].trim();
+            const name = row[2].trim();
+            if (gift && name) {
+              if (!claims[gift]) claims[gift] = [];
+              claims[gift].push(name);
+            }
           }
         }
-        callback(claimed);
+        applyClaims(claims, rows.length - 1);
       })
-      .catch(function(err) {
-        console.warn('Failed to fetch claimed data:', err);
-        callback([]);
+      .catch(err => {
+        loadingEl.textContent = '⚠️ 無法載入認購資料，請重新整理';
+        console.error('Failed to load claims:', err);
       });
   }
 
-  // Map form dropdown options to category keys
-  var formOptionMap = {
-    '沙發': ['沙發', 'sofa', 'KIVIK'],
-    '床架': ['床架', 'bed', 'MALM', 'SLATTUM'],
-    '衣櫃': ['衣櫃', 'wardrobe', 'PAX', 'KLEPPSTAD'],
-    '冰箱': ['冰箱', '雪櫃', 'fridge', 'Mitsubishi', 'MR-CGX'],
-    '洗衣機': ['洗衣機', 'washer', 'HITACHI', 'LTL'],
-    '微波烤箱': ['微波', '烤箱', 'oven', 'Toshiba', 'MW3'],
-    '抽濕機': ['抽濕', 'dehumid', 'Carrier', 'DC-22', 'Panasonic'],
-    'Tefal 慳位廚具': ['Tefal', 'tefal', '廚具', 'Ingenio']
-  };
+  function applyClaims(claims, totalRecords) {
+    const categories = document.querySelectorAll('.category[data-gift]');
+    let claimedCount = 0;
 
-  // Check if a form gift entry matches a card's category
-  function matchesCategory(formGift, cardCategory) {
-    var lower = formGift.toLowerCase();
-    var keywords = formOptionMap[cardCategory] || [];
-    for (var i = 0; i < keywords.length; i++) {
-      if (lower.indexOf(keywords[i].toLowerCase()) >= 0) return true;
-    }
-    return false;
-  }
+    categories.forEach(cat => {
+      const gift = cat.getAttribute('data-gift');
+      const claimArea = cat.querySelector('.category-claim-area');
+      if (!claimArea) return;
 
-  // Apply claimed status to cards
-  function applyClaims(claimedItems) {
-    var cards = document.querySelectorAll('.product-card');
-    var claimedMap = {};
+      if (claims[gift] && claims[gift].length > 0) {
+        claimedCount++;
+        cat.classList.add('claimed');
 
-    // Build map: category -> [{gift, name}]
-    for (var i = 0; i < claimedItems.length; i++) {
-      var item = claimedItems[i];
-      for (var cat in formOptionMap) {
-        if (matchesCategory(item.gift, cat)) {
-          if (!claimedMap[cat]) claimedMap[cat] = [];
-          claimedMap[cat].push(item.name);
-        }
-      }
-    }
-
-    cards.forEach(function(card) {
-      var cat = card.getAttribute('data-gift');
-      var names = claimedMap[cat];
-
-      if (names && names.length > 0) {
-        card.classList.add('claimed');
+        // Hide button and info, show claimed status
+        const btn = claimArea.querySelector('.btn-claim');
+        const info = claimArea.querySelector('.claim-info');
+        if (btn) btn.style.display = 'none';
+        if (info) info.style.display = 'none';
 
         // Add claimed badge
-        var badge = document.createElement('div');
-        badge.className = 'claimed-badge';
-        badge.textContent = '已認購 - ' + names.join('、');
-        card.insertBefore(badge, card.firstChild);
-
-        // Disable claim button
-        var btn = card.querySelector('.btn-claim');
-        if (btn) {
-          btn.classList.add('claimed-btn');
-          btn.textContent = '✅ 已認購';
-          btn.removeAttribute('href');
-          btn.removeAttribute('target');
-          btn.style.pointerEvents = 'none';
+        let badge = claimArea.querySelector('.claimed-badge');
+        if (!badge) {
+          badge = document.createElement('span');
+          badge.className = 'claimed-badge';
+          claimArea.appendChild(badge);
         }
+        badge.textContent = '✅ 已認購 — ' + claims[gift].join('、');
+        badge.style.cssText = 'color: var(--success); font-weight: 600; font-size: 1rem;';
       }
     });
 
-    // Hide loading
-    var loading = document.getElementById('loading');
-    if (loading) loading.classList.add('hidden');
-
-    // Show count in loading area
-    if (loading) {
-      loading.classList.remove('hidden');
-      loading.textContent = '📊 共有 ' + claimedItems.length + ' 項禮物已被認購，感謝大家的祝福！';
-      loading.style.background = 'var(--claimed-bg)';
-      loading.style.color = 'var(--success)';
+    if (totalRecords > 0) {
+      loadingEl.textContent = `📋 共有 ${totalRecords} 項認購記錄，${claimedCount} 個項目已被認購`;
+    } else {
+      loadingEl.textContent = '📋 暫無認購記錄';
     }
+    setTimeout(() => loadingEl.classList.add('hidden'), 3000);
   }
 
-  // Init
-  document.addEventListener('DOMContentLoaded', function() {
-    fetchClaimedData(applyClaims);
-  });
+  if (document.readyState !== 'loading') {
+    loadClaims();
+  } else {
+    document.addEventListener('DOMContentLoaded', loadClaims);
+  }
 })();
 </script>
 
