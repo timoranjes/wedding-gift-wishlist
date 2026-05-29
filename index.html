@@ -267,6 +267,23 @@
 
   .btn-claim:active { transform: scale(0.98); }
 
+  .btn-form {
+    display: inline-block;
+    background: var(--gold);
+    color: var(--navy-dark);
+    padding: 0.8rem 2rem;
+    border-radius: 8px;
+    font-weight: 700;
+    font-size: 1.05rem;
+    text-decoration: none;
+    margin-top: 0.5rem;
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .btn-form:hover {
+    transform: scale(1.03);
+    box-shadow: 0 3px 12px rgba(201,169,110,0.4);
+  }
+
   .btn-claim.claimed-btn {
     background: var(--success);
     cursor: default;
@@ -362,6 +379,7 @@
     <div class="subtitle">新婚禮品清單</div>
     <div class="heart-divider">♥ ♥ ♥</div>
     <p class="intro">感謝大家的祝福！以下是我們新居需要的禮物清單，歡迎認購任何一項，心意最珍貴 ❤️</p>
+    <a href="https://docs.google.com/forms/d/e/1FAIpQLSdGp-uLkdnlIM1CvZQyvf7niSyvtxGwEdmjl-PZhmdk1h-W6g/viewform" target="_blank" class="btn-form">📝 填寫認購表單</a>
   </div>
 </header>
 
