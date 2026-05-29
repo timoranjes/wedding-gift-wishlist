@@ -241,6 +241,17 @@ body {
   font-weight: 600;
   font-size: 0.9rem;
 }
+.back-to-top {
+  position: fixed; bottom: 2rem; right: 2rem;
+  width: 44px; height: 44px; border-radius: 50%;
+  background: var(--navy); color: var(--gold);
+  border: 2px solid var(--gold); font-size: 1.2rem;
+  cursor: pointer; display: none; align-items: center; justify-content: center;
+  box-shadow: 0 4px 12px rgba(26,35,50,0.3); transition: all 0.2s; z-index: 100;
+}
+.back-to-top:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(26,35,50,0.4); }
+.back-to-top.visible { display: flex; }
+.category.claimed { border-color: #bbf7d0; box-shadow: 0 0 0 1px #bbf7d0, var(--card-shadow); }
 .footer {
   text-align: center;
   padding: 2rem 1rem;
@@ -483,7 +494,7 @@ body {
       <img class="product-img" src="https://medias.fortress.com.hk/publishing/FTRHK-13151449-FRONT-zoom.png" alt="Carrier DC-22VSB">
       <div class="product-info">
         <div class="product-name">Carrier 開利 DC-22VSB</div>
-        <div class="product-desc">22L 二合一空氣淨化變頻抽濕機 · 消委會 4.5 星 · HK$2,980</div>
+        <div class="product-desc">22L 二合一空氣淨化變頻抽濕機 · 消委會 4.5 星</div>
         <div class="product-price">HK$2,980</div>
         <div class="product-links">
           <a class="btn-link btn-fortress" href="https://www.fortress.com.hk/en/product/dc-22vsb-22l-2-in-1-air-purifying-inverter-dehumidifier/p/BP_13151449" target="_blank">Fortress 豐澤</a>
@@ -548,7 +559,11 @@ body {
 
 </div>
 
-<div id="claim-status" style="text-align:center;padding:0.75rem 1rem;font-size:0.85rem;color:var(--gold);background:var(--card-bg);border:1px solid rgba(212,175,55,0.2);border-radius:8px;margin:0 1rem 1rem;"></div>
+<div id="claim-status" style="text-align:center;padding:0.75rem 1rem;font-size:0.85rem;color:var(--gold);background:var(--white);border:1px solid rgba(212,175,55,0.2);border-radius:8px;margin-bottom:1rem;">🔄 載入認購狀態中...</div>
+
+</div>
+
+<button class="back-to-top" id="backToTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">&#9650;</button>
 
 <div class="footer">
   <span class="ring">💍</span>
@@ -659,6 +674,13 @@ body {
 
   if (document.readyState !== 'loading') loadClaims();
   else document.addEventListener('DOMContentLoaded', loadClaims);
+
+  // Back to top button
+  const btt = document.getElementById('backToTop');
+  window.addEventListener('scroll', function() {
+    if (window.scrollY > 400) btt.classList.add('visible');
+    else btt.classList.remove('visible');
+  });
 
   // Poll every 30 seconds for new claims
   setInterval(loadClaims, 30000);
