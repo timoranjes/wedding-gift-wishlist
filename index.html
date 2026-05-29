@@ -267,7 +267,7 @@ body {
 <div class="container">
 
 <!-- 1. 沙發 -->
-<div class="category" data-category="sofa">
+<div class="category" data-category="sofa" data-gift="沙發">
   <div class="category-header">
     <div class="category-icon">🛋️</div>
     <div>
@@ -314,7 +314,7 @@ body {
 </div>
 
 <!-- 2. 床架 -->
-<div class="category" data-category="bed">
+<div class="category" data-category="bed" data-gift="床架">
   <div class="category-header">
     <div class="category-icon">🛏️</div>
     <div>
@@ -350,7 +350,7 @@ body {
 </div>
 
 <!-- 3. 衣櫃 -->
-<div class="category" data-category="wardrobe">
+<div class="category" data-category="wardrobe" data-gift="衣櫃">
   <div class="category-header">
     <div class="category-icon">🚪</div>
     <div>
@@ -386,7 +386,7 @@ body {
 </div>
 
 <!-- 4. 冰箱 -->
-<div class="category" data-category="fridge">
+<div class="category" data-category="fridge" data-gift="冰箱">
   <div class="category-header">
     <div class="category-icon">🧊</div>
     <div>
@@ -414,7 +414,7 @@ body {
 </div>
 
 <!-- 5. 洗衣機 -->
-<div class="category" data-category="washer">
+<div class="category" data-category="washer" data-gift="洗衣機">
   <div class="category-header">
     <div class="category-icon">🫧</div>
     <div>
@@ -443,7 +443,7 @@ body {
 </div>
 
 <!-- 6. 微波烤箱 -->
-<div class="category" data-category="microwave">
+<div class="category" data-category="microwave" data-gift="微波烤箱">
   <div class="category-header">
     <div class="category-icon">🍳</div>
     <div>
@@ -470,7 +470,7 @@ body {
 </div>
 
 <!-- 7. 抽濕機 -->
-<div class="category" data-category="dehumidifier">
+<div class="category" data-category="dehumidifier" data-gift="抽濕機">
   <div class="category-header">
     <div class="category-icon">💧</div>
     <div>
@@ -508,7 +508,7 @@ body {
 </div>
 
 <!-- 8. Tefal 慳位廚具 -->
-<div class="category" data-category="tefal">
+<div class="category" data-category="tefal" data-gift="Tefal 廚具">
   <div class="category-header">
     <div class="category-icon">🍲</div>
     <div>
@@ -548,6 +548,8 @@ body {
 
 </div>
 
+<div id="claim-status" style="text-align:center;padding:0.75rem 1rem;font-size:0.85rem;color:var(--gold);background:var(--card-bg);border:1px solid rgba(212,175,55,0.2);border-radius:8px;margin:0 1rem 1rem;"></div>
+
 <div class="footer">
   <span class="ring">💍</span>
   <p>承恩 & 麗娟 · 2026</p>
@@ -555,26 +557,103 @@ body {
 </div>
 
 <script>
-const FORM_PUBLISHED_ID = '1lHgYsTqt9XkXu-tWffP4MxICVP18lcLWIFYIQqBJIhE';
-const FORM_PUBLISHED_URL = 'https://docs.google.com/forms/d/e/1FAIpQLSdKQJz0qMqGJlqRjGjF5qYqG0pG5qYqG0pG5qYqG0pG5qYqG0/viewform';
-const SHEET_ID = '1kqfMw6StVhgJ-c3VN7JLDCmuhOMZZ7moMZbGauNs5cA';
-const SHEET_EMBED_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/htmlembed?range=A1:G20&headers=false&chrome=false&widget=false`;
+(function() {
+  'use strict';
+  const FORM_ID = '1FAIpQLSdGp-uLkdnlIM1CvZQyvf7niSyvtxGwEdmjl-PZhmdk1h-W6g';
+  const SHEET_ID = '1kqfMw6StVhgJ-c3VN7JLDCmuhOMZZ7moMZbGauNs5cA';
+  const FORM_URL = 'https://docs.google.com/forms/d/e/' + FORM_ID + '/viewform';
+  const SHEET_CSV = 'https://docs.google.com/spreadsheets/d/' + SHEET_ID + '/gviz/tq?tqx=out:csv&sheet=Form%20Responses%201';
+  const statusEl = document.getElementById('claim-status');
 
-const categoryNames = {
-  sofa: '沙發',
-  bed: '床架',
-  wardrobe: '衣櫃',
-  fridge: '冰箱',
-  washer: '洗衣機',
-  microwave: '微波烤箱',
-  dehumidifier: '抽濕機',
-  tefal: 'Tefal 廚具'
-};
+  const categoryNames = {
+    sofa: '沙發', bed: '床架', wardrobe: '衣櫃', fridge: '冰箱',
+    washer: '洗衣機', microwave: '微波烤箱', dehumidifier: '抽濕機', tefal: 'Tefal 廚具'
+  };
 
-function openClaim(category) {
-  const url = `https://docs.google.com/forms/d/e/1FAIpQLSeTbFzBjBmOjKjG0pG5qYqG0pG5qYqG0pG5qYqG0pG5qYqG0/viewform?usp=pp_url&entry.123456=${encodeURIComponent(categoryNames[category])}`;
-  window.open(FORM_PUBLISHED_URL, '_blank');
-}
+  window.openClaim = function(category) {
+    const encodedName = encodeURIComponent(categoryNames[category] || category);
+    window.open(FORM_URL + '?usp=pp_url&entry.123456=' + encodedName, '_blank');
+  };
+
+  function parseCSV(text) {
+    const rows = [];
+    let row = [], cell = '', inQuotes = false;
+    for (let i = 0; i < text.length; i++) {
+      const ch = text[i];
+      if (inQuotes) {
+        if (ch === '"') {
+          if (i + 1 < text.length && text[i + 1] === '"') { cell += '"'; i++; }
+          else { inQuotes = false; }
+        } else { cell += ch; }
+      } else {
+        if (ch === '"') { inQuotes = true; }
+        else if (ch === ',') { row.push(cell); cell = ''; }
+        else if (ch === '\n') { row.push(cell); cell = ''; rows.push(row); row = []; }
+        else { cell += ch; }
+      }
+    }
+    if (cell || row.length) { row.push(cell); rows.push(row); }
+    return rows;
+  }
+
+  function loadClaims() {
+    fetch(SHEET_CSV)
+      .then(r => r.text())
+      .then(text => {
+        const rows = parseCSV(text);
+        const claims = {};
+        for (let i = 1; i < rows.length; i++) {
+          const row = rows[i];
+          if (row.length >= 3 && row[1] && row[2]) {
+            const gift = row[1].trim();
+            const name = row[2].trim();
+            if (gift && name) {
+              if (!claims[gift]) claims[gift] = [];
+              claims[gift].push(name);
+            }
+          }
+        }
+        applyClaims(claims, rows.length - 1);
+      })
+      .catch(err => {
+        if (statusEl) statusEl.textContent = '⚠️ 無法載入認購資料，請重新整理';
+        console.error('Failed to load claims:', err);
+      });
+  }
+
+  function applyClaims(claims, totalRecords) {
+    const categories = document.querySelectorAll('.category[data-gift]');
+    let claimedCount = 0;
+
+    categories.forEach(cat => {
+      const gift = cat.getAttribute('data-gift');
+      if (!gift || !claims[gift]) return;
+
+      claimedCount++;
+      cat.classList.add('claimed');
+      const btn = cat.querySelector('.btn-claim');
+      if (btn) {
+        btn.disabled = true;
+        btn.textContent = '✅ 已認購 — ' + claims[gift].join('、');
+        btn.style.background = 'rgba(46,139,87,0.15)';
+        btn.style.color = 'var(--success)';
+        btn.style.cursor = 'default';
+      }
+    });
+
+    if (statusEl) {
+      if (totalRecords > 0) {
+        statusEl.textContent = '📋 共有 ' + totalRecords + ' 項認購記錄，' + claimedCount + ' 個項目已被認購';
+      } else {
+        statusEl.textContent = '📋 暫無認購記錄';
+      }
+      setTimeout(() => { statusEl.style.opacity = '0.5'; }, 5000);
+    }
+  }
+
+  if (document.readyState !== 'loading') loadClaims();
+  else document.addEventListener('DOMContentLoaded', loadClaims);
+})();
 </script>
 </body>
 </html>
