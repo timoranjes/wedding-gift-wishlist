@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>承恩 & 麗娟 結婚禮物認購清單</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600;700&family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy: #1a237e;
+  --navy-light: #283593;
+  --gold: #c9a84c;
+  --gold-light: #e8d5a3;
+  --cream: #faf8f0;
+  --white: #ffffff;
+  --gray: #f5f5f5;
+  --text: #333333;
+  --text-light: #666666;
+  --success: #4caf50;
+  --claimed: #e0e0e0;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Noto Sans TC', sans-serif;
+  background: var(--cream);
+  color: var(--text);
+  line-height: 1.6;
+}
+
+header {
+  background: linear-gradient(135deg, var(--navy) 0%, #0d1452 100%);
+  color: var(--white);
+  text-align: center;
+  padding: 40px 20px 30px;
+  position: relative;
+  overflow: hidden;
+}
+
+header::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--gold), #e8d5a3, var(--gold));
+}
+
+header h1 {
+  font-family: 'Noto Serif TC', serif;
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 8px;
+  letter-spacing: 2px;
+}
+
+header .subtitle {
+  font-size: 16px;
+  color: var(--gold-light);
+  font-weight: 300;
+}
+
+header .date {
+  font-size: 14px;
+  color: rgba(255,255,255,0.7);
+  margin-top: 12px;
+}
+
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px 16px;
+}
+
+.section-title {
+  font-family: 'Noto Serif TC', serif;
+  font-size: 20px;
+  color: var(--navy);
+  margin: 30px 0 16px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid var(--gold);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.section-title .icon {
+  font-size: 22px;
+}
+
+.category {
+  margin-bottom: 24px;
+}
+
+.product-card {
+  background: var(--white);
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  transition: transform 0.2s;
+  border-left: 4px solid var(--gold);
+  position: relative;
+}
+
+.product-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+}
+
+.product-card.claimed {
+  border-left-color: var(--success);
+  background: #f1f8e9;
+}
+
+.product-card.claimed::after {
+  content: '已認購';
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: var(--success);
+  color: white;
+  padding: 2px 10px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.product-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.product-name {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--navy);
+}
+
+.product-spec {
+  font-size: 13px;
+  color: var(--text-light);
+  margin-top: 2px;
+}
+
+.product-price {
+  font-size: 18px;
+  font-weight: 700;
+  color: #d32f2f;
+  white-space: nowrap;
+}
+
+.product-price .original {
+  font-size: 13px;
+  color: #999;
+  text-decoration: line-through;
+  font-weight: 400;
+  margin-right: 4px;
+}
+
+.product-links {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.product-links a {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 13px;
+  padding: 4px 12px;
+  border-radius: 20px;
+  text-decoration: none;
+  transition: all 0.2s;
+}
+
+.link-primary {
+  background: var(--navy);
+  color: var(--white) !important;
+}
+
+.link-primary:hover {
+  background: var(--navy-light);
+}
+
+.link-secondary {
+  background: var(--gray);
+  color: var(--text) !important;
+}
+
+.link-secondary:hover {
+  background: #e0e0e0;
+}
+
+.claim-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: 100%;
+  padding: 10px;
+  background: linear-gradient(135deg, var(--gold), #b8943f);
+  color: var(--white);
+  border: none;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+  margin-top: 4px;
+}
+
+.claim-btn:hover {
+  background: linear-gradient(135deg, #b8943f, #a68535);
+}
+
+.claim-btn:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}
+
+/* Claim Form Modal */
+.modal-overlay {
+  display: none;
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.5);
+  z-index: 1000;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.modal-overlay.active {
+  display: flex;
+}
+
+.modal {
+  background: var(--white);
+  border-radius: 16px;
+  padding: 24px;
+  max-width: 420px;
+  width: 100%;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+  position: relative;
+}
+
+.modal h2 {
+  font-family: 'Noto Serif TC', serif;
+  color: var(--navy);
+  font-size: 20px;
+  margin-bottom: 4px;
+}
+
+.modal .modal-product {
+  color: var(--text-light);
+  font-size: 14px;
+  margin-bottom: 20px;
+}
+
+.modal label {
+  display: block;
+  font-weight: 500;
+  margin-bottom: 6px;
+  font-size: 14px;
+}
+
+.modal input, .modal textarea {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 15px;
+  font-family: 'Noto Sans TC', sans-serif;
+  margin-bottom: 16px;
+  transition: border-color 0.2s;
+}
+
+.modal input:focus, .modal textarea:focus {
+  outline: none;
+  border-color: var(--navy);
+}
+
+.modal-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.modal-actions button {
+  flex: 1;
+  padding: 12px;
+  border: none;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-cancel {
+  background: var(--gray);
+  color: var(--text);
+}
+
+.btn-submit {
+  background: var(--navy);
+  color: var(--white);
+}
+
+.btn-submit:hover {
+  background: var(--navy-light);
+}
+
+/* Success message */
+.success-msg {
+  display: none;
+  text-align: center;
+  padding: 20px;
+}
+
+.success-msg.active {
+  display: block;
+}
+
+.success-msg .check {
+  font-size: 48px;
+  margin-bottom: 12px;
+}
+
+.success-msg h3 {
+  color: var(--success);
+  font-size: 18px;
+  margin-bottom: 8px;
+}
+
+/* Claims list */
+.claims-section {
+  margin-top: 40px;
+  padding: 20px;
+  background: var(--white);
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+
+.claims-section h2 {
+  font-family: 'Noto Serif TC', serif;
+  color: var(--navy);
+  font-size: 18px;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.claim-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.claim-item:last-child {
+  border-bottom: none;
+}
+
+.claim-name {
+  font-weight: 500;
+}
+
+.claim-product {
+  color: var(--text-light);
+  font-size: 14px;
+}
+
+.no-claims {
+  text-align: center;
+  color: var(--text-light);
+  padding: 20px;
+  font-size: 14px;
+}
+
+footer {
+  text-align: center;
+  padding: 30px 20px;
+  color: var(--text-light);
+  font-size: 13px;
+}
+
+footer .heart {
+  color: #e91e63;
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+  header h1 { font-size: 24px; }
+  .product-name { font-size: 15px; }
+  .product-price { font-size: 16px; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>承恩 & 麗娟</h1>
+  <div class="subtitle">結婚禮物認購清單</div>
+  <div class="date">衷心感謝大家的祝福與支持</div>
+</header>
+
+<div class="container">
+
+  <!-- 家具 -->
+  <div class="category">
+    <div class="section-title"><span class="icon">🛋️</span>家具</div>
+
+    <!-- 沙發 -->
+    <div class="product-card" data-product="IKEA KIVIK 2人座沙發">
+      <div class="product-header">
+        <div>
+          <div class="product-name">IKEA KIVIK 2人座沙發</div>
+          <div class="product-spec">W1800 x D1000mm · 低扶手 · 布套可拆洗</div>
+        </div>
+        <div class="product-price">~HK$3,990</div>
+      </div>
+      <div class="product-links">
+        <a href="https://www.ikea.com.hk/zh/products/sofas/sofas/kivik-spr-19443045" target="_blank" class="link-primary">IKEA 官網</a>
+        <a href="https://www.price.com.hk/search?q=IKEA+KIVIK" target="_blank" class="link-secondary">格價網</a>
+      </div>
+      <button class="claim-btn" onclick="openClaim(this)">🎁 我要認購</button>
+    </div>
+
+    <div class="product-card" data-product="IKEA LINDÅKRA 2人座梳化床">
+      <div class="product-header">
+        <div>
+          <div class="product-name">IKEA LINDÅKRA 2人座梳化床</div>
+          <div class="product-spec">W1800 x D1000mm · 可摺疊床 · 小空間適用</div>
+        </div>
+        <div class="product-price">~HK$3,490</div>
+      </div>
+      <div class="product-links">
+        <a href="https://www.ikea.com.hk/zh/search/?q=LINDAKRA" target="_blank" class="link-primary">IKEA 官網</a>
+      </div>
+      <button class="claim-btn" onclick="openClaim(this)">🎁 我要認購</button>
+    </div>
+
+    <!-- 床架 -->
+    <div class="product-card" data-product="IKEA MALM 油壓床架 5尺">
+      <div class="product-header">
+        <div>
+          <div class="product-name">IKEA MALM 油壓床架 5尺</div>
+          <div class="product-spec">適用 150x200cm 床褥 · 床下儲物空間 · 白色</div>
+        </div>
+        <div class="product-price">HK$4,199</div>
+      </div>
+      <div class="product-links">
+        <a href="https://www.ikea.com.hk/zh/products/beds/bed-frames/malm-art-90404803" target="_blank" class="link-primary">IKEA 官網</a>
+        <a href="https://www.price.com.hk/search?q=IKEA+MALM+bed" target="_blank" class="link-secondary">格價網</a>
+      </div>
+      <button class="claim-btn" onclick="openClaim(this)">🎁 我要認購</button>
+    </div>
+
+    <div class="product-card" data-product="IKEA SLATTUM 軟包床架 5尺">
+      <div class="product-header">
+        <div>
+          <div class="product-name">IKEA SLATTUM 軟包床架 5尺</div>
+          <div class="product-spec">適用 150x200cm 床褥 · 軟包床頭 · 簡約設計</div>
+        </div>
+        <div class="product-price">~HK$1,999</div>
+      </div>
+      <div class="product-links">
+        <a href="https://www.ikea.com.hk/zh/search/?q=SLATTUM" target="_blank" class="link-primary">IKEA 官網</a>
+      </div>
+      <button class="claim-btn" onclick="openClaim(this)">🎁 我要認購</button>
+    </div>
+
+    <!-- 衣櫃 -->
+    <div class="product-card" data-product="IKEA PAX 衣櫃系統">
+      <div class="product-header">
+        <div>
+          <div class="product-name">IKEA PAX 衣櫃系統</div>
+          <div class="product-spec">W1500mm · 可自訂內部配件 · 多款門板選擇</div>
+        </div>
+        <div class="product-price">~HK$2,500+</div>
+      </div>
+      <div class="product-links">
+        <a href="https://www.ikea.com.hk/zh/products/wardrobes-and-chest-of-drawers/wardrobe---pax-system" target="_blank" class="link-primary">IKEA PAX 規劃</a>
+      </div>
+      <button class="claim-btn" onclick="openClaim(this)">🎁 我要認購</button>
+    </div>
+
+    <div class="product-card" data-product="IKEA KLEPPSTAD 2門衣櫃">
+      <div class="product-header">
+        <div>
+          <div class="product-name">IKEA KLEPPSTAD 2門衣櫃</div>
+          <div class="product-spec">W1170mm · 經濟實用 · 白色</div>
+        </div>
+        <div class="product-price">~HK$1,299</div>
+      </div>
+      <div class="product-links">
+        <a href="https://www.ikea.com.hk/zh/search/?q=KLEPPSTAD" target="_blank" class="link-primary">IKEA 官網</a>
+      </div>
+      <button class="claim-btn" onclick="openClaim(this)">🎁 我要認購</button>
+    </div>
+  </div>
+
+  <!-- 電器 -->
+  <div class="category">
+    <div class="section-title"><span class="icon">🔌</span>電器</div>
+
+    <!-- 冰箱 -->
+    <div class="product-card" data-product="Mitsubishi MR-CGX33EY-GBK 冰箱">
+      <div class="product-header">
+        <div>
+          <div class="product-name">Mitsubishi MR-CGX33EY-GBK 冰箱</div>
+          <div class="product-spec">328公升 · 三門變頻 · 曜影夜黑 · 1級能源標籤</div>
+        </div>
+        <div class="product-price">HK$5,880 <span class="original">HK$7,990</span></div>
+      </div>
+      <div class="product-links">
+        <a href="https://www.feverelectrics.com/en/products/mitsubishi-electric-mr-cgx33ey-gbk-328l-3-door-inverter-refrigerator" target="_blank" class="link-primary">Fever Electric</a>
+        <a href="https://www.yohohongkong.com/zh-cn/product/307726-三菱-Mitsubishi-MR-CGX33EY-GBK-变频三门雪柜-328公升-右门铰-曜影夜黑-阔600x高1698x深667毫米-香港行货-1级能源标签" target="_blank" class="link-secondary">友和 YOHO</a>
+        <a href="https://www.fortress.com.hk/zh-hk/product/328公升變頻三門下置式雪櫃-mr-cgx33ey-gbk-h/p/BP_14051968" target="_blank" class="link-secondary">豐澤</a>
+      </div>
+      <button class="claim-btn" onclick="openClaim(this)">🎁 我要認購</button>
+    </div>
+
+    <!-- 洗衣機 -->
+    <div class="product-card" data-product="Hitachi LTL-065SM00 洗衣機">
+      <div class="product-header">
+        <div>
+          <div class="product-name">Hitachi LTL-065SM00 洗衣機</div>
+          <div class="product-spec">6.5公斤 · 日式全自動 · 5S極細系列 · 白色</div>
+        </div>
+        <div class="product-price">HK$1,580 - 1,910</div>
+      </div>
+      <div class="product-links">
+        <a href="https://www.yohohongkong.com/zh-hk/product/253139" target="_blank" class="link-primary">友和 YOHO</a>
+        <a href="https://www.hktvmall.com/hktv/zh/main/HITACHI-%E6%97%A5%E7%AB%8B%E5%AE%B6%E9%9B%BB%E5%AE%98%E6%96%B9%E6%97%97%E8%89%A6%E5%BA%97/s/B1186001" target="_blank" class="link-secondary">HKTVmall</a>
+        <a href="https://www.hitachi-homeappliances.com.hk/tc/products/ltl-065sm00.html" target="_blank" class="link-secondary">Hitachi 官網</a>
+      </div>
+      <button class="claim-btn" onclick="openClaim(this)">🎁 我要認購</button>
+    </div>
+
+    <!-- 微波烤箱 -->
+    <div class="product-card" data-product="Toshiba MW3-SAC24SE 微波烤箱">
+      <div class="product-header">
+        <div>
+          <div class="product-name">Toshiba MW3-SAC24SE 微波烤箱</div>
+          <div class="product-spec">24公升 · 多功能 · 空氣炸鍋 · IoT智能控制</div>
+        </div>
+        <div class="product-price">~HK$1,399</div>
+      </div>
+      <div class="product-links">
+        <a href="https://www.fortress.com.hk/en/product/mw3-sac24se-24l-multi-function-oven-with-healthy-air-fry/p/BP_13137284" target="_blank" class="link-primary">豐澤</a>
+      </div>
+      <button class="claim-btn" onclick="openClaim(this)">🎁 我要認購</button>
+    </div>
+
+    <!-- 抽濕機 -->
+    <div class="product-card" data-product="Carrier DC-22VSB 抽濕機">
+      <div class="product-header">
+        <div>
+          <div class="product-name">Carrier DC-22VSB 抽濕機</div>
+          <div class="product-spec">22公升/日 · 空氣淨化 · 變頻 · 黑色</div>
+        </div>
+        <div class="product-price">HK$3,279 <span class="original">HK$4,880</span></div>
+      </div>
+      <div class="product-links">
+        <a href="https://www.builtinpro.hk/dc-22vsb" target="_blank" class="link-primary">Built-in Pro</a>
+        <a href="https://www.price.com.hk/product.php?p=605031" target="_blank" class="link-secondary">格價網</a>
+      </div>
+      <button class="claim-btn" onclick="openClaim(this)">🎁 我要認購</button>
+    </div>
+
+    <div class="product-card" data-product="Panasonic F-Y24EH 抽濕機（備選）">
+      <div class="product-header">
+        <div>
+          <div class="product-name">Panasonic F-Y24EH 抽濕機（備選）</div>
+          <div class="product-spec">24公升/日 · 變頻 · 衣物乾燥</div>
+        </div>
+        <div class="product-price">~HK$2,680</div>
+      </div>
+      <div class="product-links">
+        <a href="https://www.price.com.hk/search?q=Panasonic+F-Y24EH" target="_blank" class="link-primary">格價網</a>
+      </div>
+      <button class="claim-btn" onclick="openClaim(this)">🎁 我要認購</button>
+    </div>
+  </div>
+
+  <!-- 廚具 -->
+  <div class="category">
+    <div class="section-title"><span class="icon">🍳</span>廚具</div>
+
+    <div class="product-card" data-product="Tefal 廚具套裝">
+      <div class="product-header">
+        <div>
+          <div class="product-name">Tefal 廚具套裝</div>
+          <div class="product-spec">不黏鍋系列 · 火紅點技術 · 多件套裝</div>
+        </div>
+        <div class="product-price">~HK$800 - 1,200</div>
+      </div>
+      <div class="product-links">
+        <a href="https://www.tefal.com.hk" target="_blank" class="link-primary">Tefal 官網</a>
+        <a href="https://www.price.com.hk/search?q=Tefal+廚具+套裝" target="_blank" class="link-secondary">格價網</a>
+      </div>
+      <button class="claim-btn" onclick="openClaim(this)">🎁 我要認購</button>
+    </div>
+
+    <div class="product-card" data-product="Tefal 摺疊手柄系列">
+      <div class="product-header">
+        <div>
+          <div class="product-name">Tefal 摺疊手柄系列</div>
+          <div class="product-spec">可摺疊手柄 · 慳位收納 · 不黏鍋</div>
+        </div>
+        <div class="product-price">~HK$300 - 500</div>
+      </div>
+      <div class="product-links">
+        <a href="https://www.tefal.com.hk" target="_blank" class="link-primary">Tefal 官網</a>
+      </div>
+      <button class="claim-btn" onclick="openClaim(this)">🎁 我要認購</button>
+    </div>
+  </div>
+
+  <!-- 已認購清單 -->
+  <div class="claims-section">
+    <h2>📋 已認購清單</h2>
+    <div id="claims-list">
+      <div class="no-claims">載入中...</div>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <p>承恩 & 麗娟 <span class="heart">❤️</span> 多謝大家的祝福</p>
+  <p style="margin-top:8px; font-size:12px;">禮物認購清單 · 避免重複認購</p>
+</footer>
+
+<!-- Claim Modal -->
+<div class="modal-overlay" id="claimModal">
+  <div class="modal">
+    <div id="claimForm">
+      <h2>🎁 認購禮物</h2>
+      <div class="modal-product" id="modalProduct"></div>
+      <label>你的名字 *</label>
+      <input type="text" id="claimName" placeholder="請輸入名字" required>
+      <label>留言（可選）</label>
+      <textarea id="claimMessage" rows="3" placeholder="祝福說話..."></textarea>
+      <div class="modal-actions">
+        <button class="btn-cancel" onclick="closeClaim()">取消</button>
+        <button class="btn-submit" onclick="submitClaim()">提交認購</button>
+      </div>
+    </div>
+    <div class="success-msg" id="successMsg">
+      <div class="check">✅</div>
+      <h3>認購成功！</h3>
+      <p>多謝你嘅祝福！</p>
+      <button class="btn-submit" style="margin-top:16px; width:100%;" onclick="closeClaim()">關閉</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// Google resources
+const FORM_ID = '1lHgYsTqt9XkXu-tWffP4MxICVP18lcLWIFYIQqBJIhE';
+const FORM_URL = `https://docs.google.com/forms/d/${FORM_ID}/viewform`;
+const SHEET_ID = '1MSxV47n9W8Lu2ZLGuHgSOXitM7UOCrK1BMiq6K5RaZI';
+const PUB_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=Claims`;
+
+let selectedProduct = '';
+
+function openClaim(btn) {
+  const card = btn.closest('.product-card');
+  selectedProduct = card.dataset.product;
+  // Redirect to Google Form for submission
+  window.open(FORM_URL, '_blank');
+  
+  // Also store locally for immediate feedback
+  const claims = JSON.parse(localStorage.getItem('wedding_claims') || '[]');
+  claims.push({
+    name: '(透過 Google Form 提交)',
+    product: selectedProduct,
+    message: '',
+    time: new Date().toISOString()
+  });
+  localStorage.setItem('wedding_claims', JSON.stringify(claims));
+  
+  // Mark card as claimed
+  card.classList.add('claimed');
+}
+
+async function loadClaims() {
+  const list = document.getElementById('claims-list');
+  const localClaims = JSON.parse(localStorage.getItem('wedding_claims') || '[]');
+  
+  try {
+    const resp = await fetch(PUB_URL);
+    const text = await resp.text();
+    const jsonStr = text.match(/google\.visualization\.Query\.setResponse\(([\s\S]*)\);?/);
+    if (jsonStr) {
+      const data = JSON.parse(jsonStr[1]);
+      const rows = data.table.rows || [];
+      const sheetClaims = rows.map(r => ({
+        name: r.c[1]?.v || '',
+        product: r.c[2]?.v || '',
+        time: r.c[0]?.v || ''
+      })).filter(c => c.name && c.product).slice(1);
+      
+      renderClaims([...sheetClaims, ...localClaims]);
+      return;
+    }
+  } catch(e) {
+    console.log('Sheet load failed, using localStorage');
+  }
+  
+  renderClaims(localClaims);
+}
+
+function renderClaims(claims) {
+  const list = document.getElementById('claims-list');
+  
+  if (claims.length === 0) {
+    list.innerHTML = '<div class="no-claims">暫時未有認購，做第一個啦！🎉</div>';
+    return;
+  }
+  
+  const grouped = {};
+  claims.forEach(c => {
+    if (!grouped[c.product]) grouped[c.product] = [];
+    grouped[c.product].push(c);
+  });
+  
+  let html = '';
+  for (const [product, claimants] of Object.entries(grouped)) {
+    const names = claimants.map(c => c.name).join('、');
+    html += `<div class="claim-item">
+      <div>
+        <div class="claim-name">${names}</div>
+        <div class="claim-product">${product}</div>
+      </div>
+    </div>`;
+    
+    const cards = document.querySelectorAll('.product-card');
+    cards.forEach(card => {
+      if (card.dataset.product === product) {
+        card.classList.add('claimed');
+      }
+    });
+  }
+  
+  list.innerHTML = html;
+}
+
+loadClaims();
+</script>
+
+</body>
+</html>
