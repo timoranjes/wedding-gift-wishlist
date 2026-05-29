@@ -727,10 +727,16 @@
 
   // Initialize
   document.addEventListener('DOMContentLoaded', function() {
-    initProductKeys();
+  function init() {
     renderClaimedList();
     markExistingClaims();
-  });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
 })();
 </script>
 
