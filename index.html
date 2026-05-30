@@ -818,19 +818,14 @@ body {
       // Direct match (new form format)
       let matchedClaims = claims[gift];
 
-      // Fuzzy match (legacy form format: "中文名 — English Model" vs new "English Model 中文名")
+      // Legacy format matching: only match on model/brand identifiers, NOT generic category names
       if (!matchedClaims) {
         for (const key in claims) {
-          // Extract key identifiers (model numbers, brand names) from both strings
-          const giftWords = gift.match(/[A-Z0-9]+[A-Z0-9\-]*/g) || [];
-          const keyWords = key.match(/[A-Z0-9]+[A-Z0-9\-]*/g) || [];
-          const hasOverlap = giftWords.length > 0 && keyWords.some(kw => giftWords.includes(kw));
-          // Also match by Chinese category name
-          const chineseMatch = gift.match(/[\u4e00-\u9fff]{2,}/g) || [];
-          const keyChinese = key.match(/[\u4e00-\u9fff]{2,}/g) || [];
-          const hasChineseOverlap = chineseMatch.length > 0 && keyChinese.some(kc => chineseMatch.includes(kc));
-
-          if (hasOverlap || hasChineseOverlap) {
+          // Extract model numbers / brand+model identifiers (e.g., MR-CGX33EY-GBK, MW3-SAC24SE)
+          const giftModels = gift.match(/[A-Z0-9]+[\-][A-Z0-9]+/g) || [];
+          const keyModels = key.match(/[A-Z0-9]+[\-][A-Z0-9]+/g) || [];
+          // Match only if at least one model number overlaps
+          if (giftModels.length > 0 && keyModels.length > 0 && giftModels.some(m => keyModels.includes(m))) {
             if (!matchedClaims) matchedClaims = [];
             matchedClaims = matchedClaims.concat(claims[key]);
           }
