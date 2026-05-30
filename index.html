@@ -534,7 +534,7 @@ body {
 <main class="container">
 
   <!-- 1. 沙發 -->
-  <section class="category-section" id="sofa" data-category="sofa" data-gift="沙發">
+  <section class="category-section" id="sofa" data-category="sofa" data-gift="GLOSTAD 三座位梳化 (Knisa 深灰色)">
     <div class="category-header">
       <div class="icon">🛋️</div>
       <h2>沙發</h2>
@@ -557,7 +557,7 @@ body {
   </section>
 
   <!-- 2. 床架 -->
-  <section class="category-section" id="bed" data-category="bed" data-gift="床架">
+  <section class="category-section" id="bed" data-category="bed" data-gift="MALM 高身床架 (染白橡木, 150×200cm)">
     <div class="category-header">
       <div class="icon">🛏️</div>
       <h2>床架</h2>
@@ -588,7 +588,7 @@ body {
   </section>
 
   <!-- 3. 衣櫃 -->
-  <section class="category-section" id="wardrobe" data-category="wardrobe" data-gift="衣櫃">
+  <section class="category-section" id="wardrobe" data-category="wardrobe" data-gift="KLEPPSTAD 趟門衣櫃 (白色)">
     <div class="category-header">
       <div class="icon">🚪</div>
       <h2>衣櫃</h2>
@@ -611,7 +611,7 @@ body {
   </section>
 
   <!-- 4. 冰箱 -->
-  <section class="category-section" id="fridge" data-category="fridge" data-gift="冰箱 — Mitsubishi MR-CGX33EY-GBK">
+  <section class="category-section" id="fridge" data-category="fridge" data-gift="Mitsubishi MR-CGX33EY-GBK 冰箱">
     <div class="category-header">
       <div class="icon">🧊</div>
       <h2>冰箱</h2>
@@ -636,7 +636,7 @@ body {
   </section>
 
   <!-- 5. 洗衣機 -->
-  <section class="category-section" id="washer" data-category="washer" data-gift="洗衣機 — HITACHI LTL-065SM00">
+  <section class="category-section" id="washer" data-category="washer" data-gift="HITACHI LTL-065SM00 洗衣機">
     <div class="category-header">
       <div class="icon">🫧</div>
       <h2>洗衣機</h2>
@@ -662,7 +662,7 @@ body {
   </section>
 
   <!-- 6. 微波烤箱 -->
-  <section class="category-section" id="microwave" data-category="microwave" data-gift="微波烤箱 — Toshiba MW3-SAC24SE">
+  <section class="category-section" id="microwave" data-category="microwave" data-gift="Toshiba MW3-SAC24SE 微波烤箱">
     <div class="category-header">
       <div class="icon">🍳</div>
       <h2>微波烤箱</h2>
@@ -686,7 +686,7 @@ body {
   </section>
 
   <!-- 7. 抽濕機 -->
-  <section class="category-section" id="dehumidifier" data-category="dehumidifier" data-gift="抽濕機 — Carrier DC-22VSB">
+  <section class="category-section" id="dehumidifier" data-category="dehumidifier" data-gift="Carrier DC-22VSB 抽濕機">
     <div class="category-header">
       <div class="icon">💧</div>
       <h2>抽濕機</h2>
@@ -815,10 +815,22 @@ body {
       const gift = sec.getAttribute('data-gift');
       if (!gift) return;
 
+      // Direct match (new form format)
       let matchedClaims = claims[gift];
+
+      // Fuzzy match (legacy form format: "中文名 — English Model" vs new "English Model 中文名")
       if (!matchedClaims) {
         for (const key in claims) {
-          if (key.startsWith(gift + ' — ') || key.startsWith(gift + ' - ')) {
+          // Extract key identifiers (model numbers, brand names) from both strings
+          const giftWords = gift.match(/[A-Z0-9]+[A-Z0-9\-]*/g) || [];
+          const keyWords = key.match(/[A-Z0-9]+[A-Z0-9\-]*/g) || [];
+          const hasOverlap = giftWords.length > 0 && keyWords.some(kw => giftWords.includes(kw));
+          // Also match by Chinese category name
+          const chineseMatch = gift.match(/[\u4e00-\u9fff]{2,}/g) || [];
+          const keyChinese = key.match(/[\u4e00-\u9fff]{2,}/g) || [];
+          const hasChineseOverlap = chineseMatch.length > 0 && keyChinese.some(kc => chineseMatch.includes(kc));
+
+          if (hasOverlap || hasChineseOverlap) {
             if (!matchedClaims) matchedClaims = [];
             matchedClaims = matchedClaims.concat(claims[key]);
           }
@@ -859,45 +871,51 @@ body {
 
   // === Load Claims from all tabs ===
   const SHEET_TABS = [
-    // {gid, nameCol, giftCol, msgCol, label}
-    { gid: 1779346334, nameCol: 1, giftCol: 2, msgCol: 3, label: '新表單' },  // 表單回覆 2: [1]姓名, [2]禮品
-    { gid: 1863988431, nameCol: 2, giftCol: 1, msgCol: 3, label: '舊表單1' },  // 表單回覆 1: [1]禮物, [2]姓名
-    { gid: 1108610052, nameCol: 2, giftCol: 1, msgCol: 3, label: '舊表單2' },  // Form Responses 1: [1]禮物, [2]姓名
+    { gid: 1779346334, nameCol: 1, giftCol: 2, msgCol: 3 },  // 表單回覆 2: [1]姓名, [2]禮品
+    { gid: 1863988431, nameCol: 2, giftCol: 1, msgCol: 3 },  // 表單回覆 1: [1]禮物, [2]姓名
+    { gid: 1108610052, nameCol: 2, giftCol: 1, msgCol: 3 },  // Form Responses 1: [1]禮物, [2]姓名
   ];
 
-  function loadClaims() {
-    const allClaims = {};
-    let totalRows = 0;
-    let done = 0;
+  function fetchTabCSV(tab) {
+    const url = 'https://docs.google.com/spreadsheets/d/' + CONFIG.SHEET_ID + '/gviz/tq?tqx=out:csv&gid=' + tab.gid;
+    return fetch(url).then(r => r.text()).then(text => {
+      const rows = parseCSV(text);
+      const claims = {};
+      for (let i = 1; i < rows.length; i++) {
+        const row = rows[i];
+        if (row.length > Math.max(tab.nameCol, tab.giftCol) && row[tab.nameCol] && row[tab.giftCol]) {
+          const name = row[tab.nameCol].trim();
+          const gift = row[tab.giftCol].trim();
+          const msg = row[tab.msgCol] ? row[tab.msgCol].trim() : '';
+          if (msg.includes('已取消') || msg.includes('CANCELLED')) continue;
+          if (gift && name) {
+            if (!claims[gift]) claims[gift] = [];
+            if (!claims[gift].includes(name)) claims[gift].push(name);
+          }
+        }
+      }
+      return { claims, count: rows.length - 1 };
+    }).catch(() => ({ claims: {}, count: 0 }));
+  }
 
-    SHEET_TABS.forEach(tab => {
-      const csvUrl = 'https://docs.google.com/spreadsheets/d/' + CONFIG.SHEET_ID + '/gviz/tq?tqx=out:csv&gid=' + tab.gid;
-      fetch(csvUrl)
-        .then(r => r.text())
-        .then(text => {
-          const rows = parseCSV(text);
-          for (let i = 1; i < rows.length; i++) {
-            const row = rows[i];
-            if (row.length >= 3 && row[tab.nameCol] && row[tab.giftCol]) {
-              const name = row[tab.nameCol].trim();
-              const gift = row[tab.giftCol].trim();
-              const msg = row[tab.msgCol] ? row[tab.msgCol].trim() : '';
-              if (msg.includes('已取消') || msg.includes('CANCELLED')) continue;
-              if (gift && name) {
-                if (!allClaims[gift]) allClaims[gift] = [];
-                if (!allClaims[gift].includes(name)) allClaims[gift].push(name);
-              }
-            }
-          }
-          totalRows += rows.length - 1;
-        })
-        .catch(() => { /* skip failed tab */ })
-        .finally(() => {
-          done++;
-          if (done === SHEET_TABS.length) {
-            applyClaims(allClaims, totalRows);
-          }
-        });
+  function mergeClaims(allClaims, newClaims) {
+    for (const gift in newClaims) {
+      if (!allClaims[gift]) allClaims[gift] = [];
+      newClaims[gift].forEach(n => { if (!allClaims[gift].includes(n)) allClaims[gift].push(n); });
+    }
+  }
+
+  function loadClaims() {
+    Promise.allSettled(SHEET_TABS.map(fetchTabCSV)).then(results => {
+      const allClaims = {};
+      let totalRows = 0;
+      results.forEach(r => {
+        if (r.status === 'fulfilled' && r.value) {
+          mergeClaims(allClaims, r.value.claims);
+          totalRows += r.value.count;
+        }
+      });
+      applyClaims(allClaims, totalRows);
     });
   }
 
