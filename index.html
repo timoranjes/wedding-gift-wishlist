@@ -778,6 +778,9 @@ body {
           if (row.length >= 3 && row[1] && row[2]) {
             const gift = row[1].trim();
             const name = row[2].trim();
+            const msg = row[3] ? row[3].trim() : '';
+            // Skip cancelled/duplicate rows
+            if (msg.includes('已取消') || msg.includes('CANCELLED')) continue;
             if (gift && name) {
               if (!claims[gift]) claims[gift] = [];
               claims[gift].push(name);
