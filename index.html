@@ -884,7 +884,7 @@ body {
   ];
 
   function fetchTabCSV(tab) {
-    const url = 'https://docs.google.com/spreadsheets/d/' + CONFIG.SHEET_ID + '/gviz/tq?tqx=out:csv&gid=' + tab.gid;
+    const url = 'https://docs.google.com/spreadsheets/d/' + CONFIG.SHEET_ID + '/gviz/tq?tqx=out:csv&gid=' + tab.gid + '&t=' + Date.now();
     return fetch(url).then(r => r.text()).then(text => {
       const rows = parseCSV(text);
       const claims = {};
