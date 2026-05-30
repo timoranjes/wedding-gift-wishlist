@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#FFF8F0">
 <title>承恩 & 麗娟 — 新家購物清單</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Noto+Serif+TC:wght@400;600&family=Noto+Sans+TC:wght@300;400;500&display=swap" rel="stylesheet">
@@ -15,255 +16,380 @@
   --blush-light: #F5E0D8;
   --rose: #C48B7A;
   --rose-deep: #A06B5A;
-  --rose-light: #D4A596;
   --charcoal: #3D3D3D;
   --warm-gray: #8A817C;
   --warm-gray-light: #B8B0AA;
   --gold-soft: #D4A574;
   --white: #FFFFFF;
   --sage: #A8B5A0;
-  --shadow-sm: 0 1px 4px rgba(61,61,61,0.05);
-  --shadow-md: 0 4px 16px rgba(61,61,61,0.08);
-  --shadow-lg: 0 8px 32px rgba(61,61,61,0.12);
-  --shadow-glow: 0 4px 20px rgba(196,139,122,0.25);
-  --radius: 16px;
-  --radius-sm: 12px;
+  --sage-light: #E8EDE6;
+  --shadow-sm: 0 1px 3px rgba(61,61,61,0.06);
+  --shadow-md: 0 4px 12px rgba(61,61,61,0.08);
+  --shadow-lg: 0 8px 24px rgba(61,61,61,0.10);
+  --shadow-glow: 0 4px 20px rgba(196,139,122,0.20);
+  --radius: 14px;
+  --radius-sm: 10px;
   --radius-pill: 999px;
+  --nav-height: 48px;
+  --hero-mobile: 12rem;
+  --hero-desktop: 18rem;
 }
 
 /* === Reset & Base === */
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-html { scroll-behavior: smooth; }
+html { scroll-behavior: smooth; scroll-padding-top: calc(var(--nav-height) + 12px); }
 body {
-  font-family: 'Noto Sans TC', sans-serif;
+  font-family: 'Noto Sans TC', -apple-system, sans-serif;
   font-weight: 300;
   background: var(--cream);
   color: var(--charcoal);
-  line-height: 1.7;
+  line-height: 1.6;
   -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
 }
 
 /* === Hero === */
 .hero {
-  background: linear-gradient(160deg, var(--blush-light) 0%, var(--cream) 40%, var(--blush) 100%);
+  background: linear-gradient(160deg, var(--blush-light) 0%, var(--cream) 50%, var(--blush) 100%);
   text-align: center;
-  padding: 4rem 1.5rem 3.5rem;
+  padding: 3rem 1.25rem 2rem;
   position: relative;
   overflow: hidden;
+  min-height: var(--hero-mobile);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 .hero::before {
   content: '';
   position: absolute;
-  top: -50%; left: -20%;
-  width: 140%; height: 200%;
-  background: radial-gradient(ellipse at 30% 20%, rgba(232,196,184,0.4) 0%, transparent 60%),
-              radial-gradient(ellipse at 70% 80%, rgba(196,139,122,0.2) 0%, transparent 50%);
+  top: -40%; left: -15%;
+  width: 130%; height: 180%;
+  background: radial-gradient(ellipse at 30% 20%, rgba(232,196,184,0.35) 0%, transparent 55%),
+              radial-gradient(ellipse at 70% 80%, rgba(196,139,122,0.15) 0%, transparent 45%);
   pointer-events: none;
 }
 .hero .divider {
-  font-size: 0.75rem;
-  letter-spacing: 0.5em;
+  font-size: 0.65rem;
+  letter-spacing: 0.6em;
   color: var(--warm-gray-light);
-  margin-bottom: 1.5rem;
+  margin-bottom: 1rem;
   position: relative;
 }
 .hero .couple {
   font-family: 'Playfair Display', 'Noto Serif TC', serif;
-  font-size: 2.8rem;
+  font-size: 1.85rem;
   font-weight: 400;
   color: var(--charcoal);
-  letter-spacing: 0.05em;
-  margin-bottom: 0.75rem;
+  letter-spacing: 0.04em;
+  margin-bottom: 0.5rem;
   position: relative;
+  line-height: 1.3;
 }
 .hero .couple em {
   font-style: italic;
   color: var(--rose);
-  margin: 0 0.15em;
+  margin: 0 0.1em;
 }
 .hero .subtitle {
   font-family: 'Noto Serif TC', serif;
-  font-size: 0.95rem;
+  font-size: 0.8rem;
   color: var(--warm-gray);
-  letter-spacing: 0.1em;
+  letter-spacing: 0.08em;
   font-weight: 400;
   position: relative;
 }
-.hero .ornament {
-  position: absolute;
-  bottom: 0; left: 50%;
-  transform: translateX(-50%);
-  width: 80px;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, var(--blush), transparent);
+
+@media (min-width: 768px) {
+  .hero { padding: 5rem 2rem 4rem; min-height: var(--hero-desktop); }
+  .hero .couple { font-size: 3rem; }
+  .hero .divider { font-size: 0.75rem; margin-bottom: 1.5rem; }
+  .hero .subtitle { font-size: 0.95rem; }
 }
 
-/* === Claim Status === */
-.status-bar {
+/* === Progress Bar === */
+.progress-bar {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: rgba(255,248,240,0.92);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--blush-light);
+  padding: 0.6rem 1.25rem;
+  transition: transform 0.2s ease;
+}
+.progress-inner {
   max-width: 1100px;
-  margin: 1.5rem auto 0;
-  padding: 0 1.5rem;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
 }
-.status-bar-inner {
-  text-align: center;
-  padding: 0.75rem 1.25rem;
-  font-size: 0.85rem;
-  color: var(--rose-deep);
-  background: var(--white);
-  border: 1px solid var(--blush-light);
+.progress-track {
+  flex: 1;
+  height: 4px;
+  background: var(--blush-light);
+  border-radius: 2px;
+  overflow: hidden;
+}
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--rose), var(--gold-soft));
+  border-radius: 2px;
+  width: 0%;
+  transition: width 0.6s ease;
+}
+.progress-text {
+  font-size: 0.72rem;
+  color: var(--warm-gray);
+  white-space: nowrap;
+  font-weight: 400;
+}
+@media (min-width: 768px) {
+  .progress-text { font-size: 0.82rem; }
+}
+
+/* === Category Nav === */
+.category-nav {
+  position: sticky;
+  top: 40px;
+  z-index: 40;
+  background: rgba(255,248,240,0.95);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  padding: 0.5rem 0;
+  border-bottom: 1px solid rgba(232,196,184,0.2);
+}
+.category-nav-inner {
+  display: flex;
+  gap: 0.4rem;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  padding: 0 1.25rem;
+  scrollbar-width: none;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+.category-nav-inner::-webkit-scrollbar { display: none; }
+.cat-pill {
+  scroll-snap-align: start;
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.4rem 0.75rem;
   border-radius: var(--radius-pill);
-  box-shadow: var(--shadow-sm);
-  transition: opacity 0.5s;
+  font-size: 0.75rem;
+  font-weight: 400;
+  color: var(--warm-gray);
+  background: transparent;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-decoration: none;
+  white-space: nowrap;
+  font-family: 'Noto Sans TC', sans-serif;
 }
+.cat-pill:hover, .cat-pill:focus-visible {
+  background: var(--blush-light);
+  color: var(--charcoal);
+}
+.cat-pill.active {
+  background: var(--rose);
+  color: var(--white);
+  border-color: var(--rose);
+}
+.cat-pill.claimed {
+  color: var(--sage);
+}
+.cat-pill .pill-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--warm-gray-light);
+}
+.cat-pill.active .pill-dot { background: var(--white); }
+.cat-pill.claimed .pill-dot { background: var(--sage); }
+
+/* === Reference Note (Global) === */
+.global-reference {
+  max-width: 1100px;
+  margin: 1rem auto 0;
+  padding: 0 1.25rem;
+}
+.ref-toggle {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.65rem 1rem;
+  background: var(--cream-dark);
+  border: 1px solid rgba(212,165,116,0.2);
+  border-radius: var(--radius-sm);
+  font-size: 0.8rem;
+  color: var(--warm-gray);
+  cursor: pointer;
+  font-family: 'Noto Sans TC', sans-serif;
+  transition: background 0.2s;
+}
+.ref-toggle:hover { background: var(--blush-light); }
+.ref-toggle .arrow {
+  transition: transform 0.25s ease;
+  font-size: 0.7rem;
+}
+.ref-toggle.open .arrow { transform: rotate(180deg); }
+.ref-content {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+}
+.ref-content-inner {
+  padding: 0.75rem 1rem;
+  font-size: 0.78rem;
+  color: var(--warm-gray);
+  line-height: 1.6;
+  background: var(--cream-dark);
+  border-top: 1px solid rgba(212,165,116,0.15);
+  border-radius: 0 0 var(--radius-sm) var(--radius-sm);
+}
+.ref-content-inner strong { color: var(--charcoal); font-weight: 500; }
 
 /* === Layout === */
 .container {
   max-width: 1100px;
   margin: 0 auto;
-  padding: 2rem 1.5rem 5rem;
+  padding: 1.25rem 1.25rem 6rem;
 }
 
 /* === Category Section === */
 .category-section {
-  margin-bottom: 2.5rem;
+  margin-bottom: 2rem;
+  scroll-margin-top: calc(var(--nav-height) + 80px);
 }
-.category-label {
+.category-header {
   display: flex;
   align-items: center;
   gap: 0.6rem;
-  padding: 0.75rem 0;
-  margin-bottom: 1rem;
-  position: sticky;
-  top: 0;
-  z-index: 10;
-  background: linear-gradient(to bottom, var(--cream) 80%, transparent);
-  padding-top: 0.5rem;
+  padding: 0.5rem 0;
+  margin-bottom: 0.75rem;
 }
-.category-label .icon {
-  width: 36px; height: 36px;
+.category-header .icon {
+  width: 32px;
+  height: 32px;
   background: var(--blush-light);
-  border-radius: 10px;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 1.1rem;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  flex-shrink: 0;
 }
-.category-label h2 {
+.category-header h2 {
   font-family: 'Noto Serif TC', serif;
-  font-size: 1.15rem;
+  font-size: 1rem;
   font-weight: 600;
   color: var(--charcoal);
+  flex: 1;
 }
-.category-label .spec {
-  font-size: 0.8rem;
+.category-header .spec {
+  font-size: 0.72rem;
   color: var(--warm-gray);
-  margin-left: auto;
-  font-weight: 400;
+  text-align: right;
 }
-
-/* === Reference Note === */
-.reference-note {
-  background: var(--cream-dark);
-  border-left: 3px solid var(--gold-soft);
-  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
-  padding: 0.75rem 1rem;
-  margin-bottom: 1rem;
-  font-size: 0.82rem;
-  color: var(--warm-gray);
-  line-height: 1.6;
-}
-.reference-note strong {
-  color: var(--charcoal);
+.category-header .claimed-tag {
+  font-size: 0.7rem;
+  color: var(--sage);
+  background: var(--sage-light);
+  padding: 0.2rem 0.6rem;
+  border-radius: var(--radius-pill);
   font-weight: 500;
+  white-space: nowrap;
 }
 
-/* === Product Grid === */
-.product-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 1.25rem;
-}
-@media (max-width: 760px) {
-  .product-grid { grid-template-columns: 1fr; }
-}
-@media (max-width: 600px) {
-  .hero .couple { font-size: 2rem; }
-  .hero { padding: 3rem 1.25rem 2.5rem; }
-  .container { padding: 1.5rem 1rem 4rem; }
-  .category-label h2 { font-size: 1rem; }
-  .category-label .spec { display: none; }
-  .reference-note { font-size: 0.78rem; }
+@media (min-width: 768px) {
+  .category-header h2 { font-size: 1.15rem; }
+  .category-header .spec { font-size: 0.8rem; }
 }
 
-/* === Product Card === */
+/* === Product List === */
+.product-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+/* === Product Card (Horizontal) === */
 .product-card {
   background: var(--white);
   border-radius: var(--radius);
   overflow: hidden;
   box-shadow: var(--shadow-sm);
-  border: 1px solid rgba(232,196,184,0.3);
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
-  display: flex;
-  flex-direction: column;
+  border: 1px solid rgba(232,196,184,0.25);
+  display: grid;
+  grid-template-columns: 100px 1fr;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
-.product-card:hover {
-  transform: translateY(-3px);
-  box-shadow: var(--shadow-md);
+.product-card:active {
+  transform: scale(0.99);
 }
 .product-card .card-img {
   width: 100%;
-  aspect-ratio: 4 / 3;
+  height: 100%;
+  min-height: 100px;
   object-fit: contain;
   background: var(--cream-dark);
   display: block;
 }
 .product-card .card-body {
-  padding: 1rem 1.15rem 1.25rem;
-  flex: 1;
+  padding: 0.75rem 0.85rem;
   display: flex;
   flex-direction: column;
+  gap: 0.25rem;
 }
 .product-card .card-name {
   font-family: 'Noto Serif TC', serif;
-  font-size: 0.95rem;
+  font-size: 0.85rem;
   font-weight: 600;
   color: var(--charcoal);
-  margin-bottom: 0.3rem;
-  line-height: 1.4;
+  line-height: 1.35;
 }
 .product-card .card-desc {
-  font-size: 0.8rem;
+  font-size: 0.72rem;
   color: var(--warm-gray);
-  margin-bottom: 0.6rem;
-  line-height: 1.5;
+  line-height: 1.45;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 .product-card .card-price {
   font-family: 'Playfair Display', serif;
-  font-size: 1.1rem;
+  font-size: 0.95rem;
   font-weight: 600;
   color: var(--rose-deep);
-  margin-bottom: 0.6rem;
+  margin-top: auto;
 }
 .product-card .card-links {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.35rem;
-  margin-top: auto;
+  gap: 0.3rem;
 }
 .card-links a {
   display: inline-flex;
   align-items: center;
-  gap: 0.25rem;
-  padding: 0.3rem 0.65rem;
+  padding: 0.2rem 0.5rem;
   border-radius: var(--radius-pill);
-  font-size: 0.72rem;
+  font-size: 0.65rem;
   font-weight: 500;
   text-decoration: none;
-  transition: all 0.2s;
+  transition: all 0.15s;
   border: 1px solid;
   white-space: nowrap;
 }
-.card-links a:hover {
-  transform: translateY(-1px);
-}
+.card-links a:hover { transform: translateY(-1px); }
 .card-links .link-fortress { background: #FFF5F0; color: #D45500; border-color: #FFCCAA; }
 .card-links .link-broadway { background: #F0F5FF; color: #2563EB; border-color: #BFDBFE; }
 .card-links .link-yoho { background: #F5F0FF; color: #7C3AED; border-color: #DDD6FE; }
@@ -274,31 +400,61 @@ body {
 .card-links .link-sce { background: #F0F8FF; color: #0369A1; border-color: #BAE6FD; }
 .card-links .link-other { background: #F8FAFC; color: #475569; border-color: #E2E8F0; }
 
+@media (min-width: 640px) {
+  .product-card { grid-template-columns: 140px 1fr; }
+  .product-card .card-img { min-height: 120px; }
+  .product-card .card-name { font-size: 0.95rem; }
+}
+
+@media (min-width: 768px) {
+  .product-list { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; }
+  .product-card { grid-template-columns: 1fr; }
+  .product-card .card-img { min-height: 140px; aspect-ratio: 4/3; }
+}
+
+/* === Info Card (full-width in grid) === */
+.product-card.info-card {
+  grid-column: 1 / -1;
+  background: var(--cream-dark);
+  border-left: 3px solid var(--gold-soft);
+}
+.product-card.info-card .card-body {
+  padding: 0.85rem 1rem;
+}
+.product-card.info-card .card-name {
+  font-size: 0.82rem;
+  color: var(--charcoal);
+}
+.product-card.info-card .card-desc {
+  color: var(--charcoal);
+  line-height: 1.65;
+  -webkit-line-clamp: unset;
+}
+
 /* === Claim Button === */
 .btn-claim {
-  display: block;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
   width: 100%;
-  max-width: 300px;
-  margin: 1.25rem auto 0;
-  padding: 0.8rem 1.5rem;
+  padding: 0.85rem 1.5rem;
+  margin-top: 1rem;
   background: linear-gradient(135deg, var(--rose), var(--rose-deep));
   color: var(--white);
   border: none;
   border-radius: var(--radius-pill);
-  font-size: 0.9rem;
+  font-size: 0.88rem;
   font-weight: 500;
   font-family: 'Noto Sans TC', sans-serif;
   cursor: pointer;
   transition: all 0.25s ease;
   box-shadow: var(--shadow-glow);
-  letter-spacing: 0.03em;
-}
-.btn-claim:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 24px rgba(196,139,122,0.35);
+  letter-spacing: 0.02em;
+  min-height: 48px;
 }
 .btn-claim:active {
-  transform: translateY(0);
+  transform: scale(0.98);
 }
 .btn-claim:disabled {
   background: var(--cream-dark);
@@ -309,28 +465,32 @@ body {
 }
 .btn-claim.claimed-badge {
   background: var(--sage);
-  color: var(--white);
+  box-shadow: 0 2px 8px rgba(168,181,160,0.25);
   font-size: 0.82rem;
-  box-shadow: 0 2px 8px rgba(168,181,160,0.3);
 }
+
+/* === Section claimed state === */
+.category-section.claimed .product-card { opacity: 0.65; }
+.category-section.claimed .btn-claim { display: none; }
+.category-section.claimed .category-header .icon { opacity: 0.5; }
 
 /* === Footer === */
 .footer {
   text-align: center;
-  padding: 3rem 1rem;
+  padding: 2.5rem 1rem 3rem;
   border-top: 1px solid var(--blush-light);
   background: var(--white);
 }
-.footer .ring { font-size: 1.3rem; display: block; margin-bottom: 0.75rem; }
+.footer .ring { font-size: 1.2rem; display: block; margin-bottom: 0.6rem; }
 .footer .names {
   font-family: 'Playfair Display', 'Noto Serif TC', serif;
-  font-size: 1.1rem;
+  font-size: 1rem;
   color: var(--charcoal);
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.4rem;
 }
 .footer .names em { font-style: italic; color: var(--rose); }
 .footer .thanks {
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   color: var(--warm-gray);
   font-weight: 300;
 }
@@ -338,15 +498,15 @@ body {
 /* === Back to Top === */
 .back-to-top {
   position: fixed;
-  bottom: 2rem;
-  right: 2rem;
-  width: 44px;
-  height: 44px;
+  bottom: 1.25rem;
+  right: 1.25rem;
+  width: 42px;
+  height: 42px;
   border-radius: 50%;
   background: var(--white);
   color: var(--rose);
   border: 1.5px solid var(--blush);
-  font-size: 1rem;
+  font-size: 0.9rem;
   cursor: pointer;
   display: none;
   align-items: center;
@@ -368,55 +528,83 @@ body {
 }
 @keyframes pulse {
   0%, 100% { opacity: 1; }
-  50% { opacity: 0.5; }
+  50% { opacity: 0.4; }
 }
 
-/* === Category claimed state === */
-.category-section.claimed .product-card {
-  opacity: 0.6;
-}
-.category-section.claimed .product-card:hover {
-  opacity: 0.8;
+/* === Reduced Motion === */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
 }
 </style>
 </head>
 <body>
 
 <!-- Hero -->
-<div class="hero">
-  <div class="divider">✦ &nbsp; ✦ &nbsp; ✦</div>
-  <div class="couple">承恩 <em>&</em> 麗娟</div>
-  <div class="subtitle">新家購物清單 · Wedding Gift Wishlist</div>
-  <div class="ornament"></div>
+<header class="hero">
+  <div class="divider">✦ ✦ ✦</div>
+  <h1 class="couple">承恩 <em>&</em> 麗娟</h1>
+  <p class="subtitle">新家購物清單</p>
+</header>
+
+<!-- Progress Bar -->
+<div class="progress-bar">
+  <div class="progress-inner">
+    <div class="progress-track">
+      <div class="progress-fill" id="progressFill"></div>
+    </div>
+    <span class="progress-text" id="claim-status">🔄 載入中...</span>
+  </div>
 </div>
 
-<!-- Status Bar -->
-<div class="status-bar">
-  <div id="claim-status" class="status-bar-inner skeleton-pulse">🔄 載入認購狀態中...</div>
+<!-- Category Nav -->
+<nav class="category-nav" aria-label="類別導航">
+  <div class="category-nav-inner">
+    <a href="#sofa" class="cat-pill" data-cat="sofa"><span class="pill-dot"></span>沙發</a>
+    <a href="#bed" class="cat-pill" data-cat="bed"><span class="pill-dot"></span>床架</a>
+    <a href="#wardrobe" class="cat-pill" data-cat="wardrobe"><span class="pill-dot"></span>衣櫃</a>
+    <a href="#fridge" class="cat-pill" data-cat="fridge"><span class="pill-dot"></span>冰箱</a>
+    <a href="#washer" class="cat-pill" data-cat="washer"><span class="pill-dot"></span>洗衣機</a>
+    <a href="#microwave" class="cat-pill" data-cat="microwave"><span class="pill-dot"></span>微波烤箱</a>
+    <a href="#dehumidifier" class="cat-pill" data-cat="dehumidifier"><span class="pill-dot"></span>抽濕機</a>
+    <a href="#tefal" class="cat-pill" data-cat="tefal"><span class="pill-dot"></span>Tefal 廚具</a>
+  </div>
+</nav>
+
+<!-- Global Reference -->
+<div class="global-reference">
+  <button class="ref-toggle" id="refToggle" aria-expanded="false">
+    <span>💡 認購說明 — 任何符合尺寸的款式都可以</span>
+    <span class="arrow">▼</span>
+  </button>
+  <div class="ref-content" id="refContent">
+    <div class="ref-content-inner">
+      <strong>自由選擇：</strong>下列產品僅供參考，任何符合尺寸的款式都可以認購。歡迎選擇你喜歡的款式和購買渠道！
+    </div>
+  </div>
 </div>
 
 <!-- Products -->
-<div class="container">
+<main class="container">
 
-  <!-- ===== 1. 沙發 ===== -->
-  <div class="category-section" data-category="sofa" data-gift="沙發">
-    <div class="category-label">
+  <!-- 1. 沙發 -->
+  <section class="category-section" id="sofa" data-category="sofa" data-gift="沙發">
+    <div class="category-header">
       <div class="icon">🛋️</div>
       <h2>沙發</h2>
-      <div class="spec">W1800 × D1000 mm 以內</div>
+      <div class="spec">W≤1800 × D≤1000mm</div>
     </div>
-    <div class="reference-note">
-      <strong>💡 參考示例</strong>：以下僅供參考，任何符合尺寸（W≤1800mm、D≤1000mm）的沙發都可以。歡迎自由選擇你喜歡的款式！
-    </div>
-    <div class="product-grid">
+    <div class="product-list">
       <div class="product-card">
         <img class="card-img" src="https://www.ikea.com.hk/dairyfarm/hk/images/797/1479794_PE1000084_S4.jpg" alt="IKEA SALTMYRAN" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMDAgMjAwIj48cmVjdCB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgZmlsbD0iI2Y1ZWRlMyIvPjx0ZXh0IHg9IjEwMCIgeT0iMTAwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBkeT0iLjM1ZW0iIGZvbnQtZmFtaWx5PSJzYW5zLXNlcmlmIiBmb250LXNpemU9IjIuNXJlbSIgZmlsbD0iI2I4YjBhYSI+8J+bi7wvPC90ZXh0Pjwvc3ZnPg=='">
         <div class="card-body">
           <div class="card-name">IKEA SALTMYRAN 二人沙發</div>
-          <div class="card-desc">Öreryd 灰米黃色 · W1470×D790×H770mm · 2026 新款 · 口袋彈簧座墊</div>
+          <div class="card-desc">Öreryd 灰米黃 · W1470×D790mm · 口袋彈簧座墊</div>
           <div class="card-price">HK$1,999</div>
           <div class="card-links">
-            <a class="link-ikea" href="https://www.ikea.com.hk/en/products/sofas-and-armchairs/sofas/saltmyran-art-40618528" target="_blank">IKEA 官方</a>
+            <a class="link-ikea" href="https://www.ikea.com.hk/en/products/sofas-and-armchairs/sofas/saltmyran-art-40618528" target="_blank" rel="noopener">IKEA</a>
           </div>
         </div>
       </div>
@@ -424,47 +612,44 @@ body {
         <img class="card-img" src="https://www.ikea.com.hk/dairyfarm/hk/images/021/0602101_PE680170_S4.jpg" alt="IKEA LANDSKRONA" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMDAgMjAwIj48cmVjdCB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgZmlsbD0iI2Y1ZWRlMyIvPjx0ZXh0IHg9IjEwMCIgeT0iMTAwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBkeT0iLjM1ZW0iIGZvbnQtZmFtaWx5PSJzYW5zLXNlcmlmIiBmb250LXNpemU9IjIuNXJlbSIgZmlsbD0iI2I4YjBhYSI+8J+bi7wvPC90ZXh0Pjwvc3ZnPg=='">
         <div class="card-body">
           <div class="card-name">IKEA LANDSKRONA 二人沙發</div>
-          <div class="card-desc">Gunnared 深灰色 · W1640×D890×H780mm · 10年保養 · 高級皮革/布套可選</div>
+          <div class="card-desc">Gunnared 深灰 · W1640×D890mm · 10年保養</div>
           <div class="card-price">HK$5,299</div>
           <div class="card-links">
-            <a class="link-ikea" href="https://www.ikea.com.hk/en/products/sofas-and-armchairs/sofas/landskrona-spr-29270280" target="_blank">IKEA 官方</a>
+            <a class="link-ikea" href="https://www.ikea.com.hk/en/products/sofas-and-armchairs/sofas/landskrona-spr-29270280" target="_blank" rel="noopener">IKEA</a>
           </div>
         </div>
       </div>
-      <div class="product-card" style="grid-column: 1 / -1; max-width: 400px; justify-self: center; width: 100%;">
+      <div class="product-card">
         <img class="card-img" src="https://www.ikea.com.hk/dairyfarm/hk/images/948/1194833_PE902081_S4.webp" alt="IKEA EKTORP" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMDAgMjAwIj48cmVjdCB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgZmlsbD0iI2Y1ZWRlMyIvPjx0ZXh0IHg9IjEwMCIgeT0iMTAwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBkeT0iLjM1ZW0iIGZvbnQtZmFtaWx5PSJzYW5zLXNlcmlmIiBmb250LXNpemU9IjIuNXJlbSIgZmlsbD0iI2I4YjBhYSI+8J+bi7wvPC90ZXh0Pjwvc3ZnPg=='">
         <div class="card-body">
           <div class="card-name">IKEA EKTORP 二人沙發</div>
-          <div class="card-desc">Kilanda 米黃色 · W1790×D880×H880mm · 經典設計 · 可拆洗布套</div>
+          <div class="card-desc">Kilanda 米黃 · W1790×D880mm · 可拆洗布套</div>
           <div class="card-price">HK$3,199</div>
           <div class="card-links">
-            <a class="link-ikea" href="https://www.ikea.com.hk/en/products/sofas-and-armchairs/sofas/ektorp-spr-29509026" target="_blank">IKEA 官方</a>
+            <a class="link-ikea" href="https://www.ikea.com.hk/en/products/sofas-and-armchairs/sofas/ektorp-spr-29509026" target="_blank" rel="noopener">IKEA</a>
           </div>
         </div>
       </div>
     </div>
     <button class="btn-claim" onclick="openClaim('sofa')">🎁 我要認購 — 沙發</button>
-  </div>
+  </section>
 
-  <!-- ===== 2. 床架 ===== -->
-  <div class="category-section" data-category="bed" data-gift="床架">
-    <div class="category-label">
+  <!-- 2. 床架 -->
+  <section class="category-section" id="bed" data-category="bed" data-gift="床架">
+    <div class="category-header">
       <div class="icon">🛏️</div>
       <h2>床架</h2>
-      <div class="spec">配合 1550×1900 mm 床墊（5尺雙人）</div>
+      <div class="spec">5尺雙人 · 承托 1550×1900mm</div>
     </div>
-    <div class="reference-note">
-      <strong>💡 參考示例</strong>：以下僅供參考，任何能承托 1550×1900 mm（5尺雙人）床墊的床架都可以。歡迎自由選擇你喜歡的款式！
-    </div>
-    <div class="product-grid">
+    <div class="product-list">
       <div class="product-card">
         <img class="card-img" src="https://www.ikea.com.hk/dairyfarm/hk/images/491/0749130_PE745499_S4.webp" alt="IKEA MALM" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMDAgMjAwIj48cmVjdCB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgZmlsbD0iI2Y1ZWRlMyIvPjx0ZXh0IHg9IjEwMCIgeT0iMTAwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBkeT0iLjM1ZW0iIGZvbnQtZmFtaWx5PSJzYW5zLXNlcmlmIiBmb250LXNpemU9IjIuNXJlbSIgZmlsbD0iI2I4YjBhYSI+8J+bi7wvPC90ZXh0Pjwvc3ZnPg=='">
         <div class="card-body">
           <div class="card-name">IKEA MALM 床架</div>
-          <div class="card-desc">白色 · 5尺 · 經典簡約 · 附 Luröy 床板條</div>
+          <div class="card-desc">白色 · 5尺 · 附 Luröy 床板條</div>
           <div class="card-price">HK$1,590</div>
           <div class="card-links">
-            <a class="link-ikea" href="https://www.ikea.com.hk/en/products/beds/bed-frames/malm-art-10404816" target="_blank">IKEA 官方</a>
+            <a class="link-ikea" href="https://www.ikea.com.hk/en/products/beds/bed-frames/malm-art-10404816" target="_blank" rel="noopener">IKEA</a>
           </div>
         </div>
       </div>
@@ -472,47 +657,41 @@ body {
         <img class="card-img" src="https://www.ikea.com.hk/dairyfarm/hk/images/385/0638583_PE699000_S4.jpg" alt="IKEA SONGESAND" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMDAgMjAwIj48cmVjdCB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgZmlsbD0iI2Y1ZWRlMyIvPjx0ZXh0IHg9IjEwMCIgeT0iMTAwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBkeT0iLjM1ZW0iIGZvbnQtZmFtaWx5PSJzYW5zLXNlcmlmIiBmb250LXNpemU9IjIuNXJlbSIgZmlsbD0iI2I4YjBhYSI+8J+bi7wvPC90ZXh0Pjwvc3ZnPg=='">
         <div class="card-body">
           <div class="card-name">IKEA SONGESAND 床架</div>
-          <div class="card-desc">白色 · 5尺 · 經典設計 · 附 Luröy 床板條 · 可加購抽屜</div>
+          <div class="card-desc">白色 · 5尺 · 可加購抽屜</div>
           <div class="card-price">HK$1,799</div>
           <div class="card-links">
-            <a class="link-ikea" href="https://www.ikea.com.hk/en/products/beds/bed-frames/songesand-spr-19241288" target="_blank">IKEA 官方</a>
+            <a class="link-ikea" href="https://www.ikea.com.hk/en/products/beds/bed-frames/songesand-spr-19241288" target="_blank" rel="noopener">IKEA</a>
           </div>
         </div>
       </div>
-      <div class="product-card" style="grid-column: 1 / -1;">
-        <div class="card-body" style="background: var(--cream-dark); border-radius: var(--radius-sm); border-left: 3px solid var(--gold-soft);">
-          <div class="card-name" style="font-size: 0.9rem;">⚠️ 床墊尺寸提示</div>
-          <div class="card-desc" style="color: var(--charcoal); line-height: 1.7; margin-bottom: 0;">
-            我們的床墊為 <strong>1550×1900mm</strong>，介乎標準 5尺（1500×1900mm）與 5尺半（1800×2000mm）之間。選購床架時請留意：<br>
-            • 5尺（1500mm 寬）床架 — 床板可能略窄，床墊每邊懸空約 25mm，需確認床板條可向外擴展<br>
-            • 5尺半（1800mm 寬）床架 — 床板太寬，床墊每邊空隙達 125mm，不建議<br>
-            • 建議方案：選購附可調較床板條的 5尺床架，或向本地傢俬店訂造 1550mm 特製床架
+      <div class="product-card info-card">
+        <div class="card-body">
+          <div class="card-name">⚠️ 床墊尺寸提示</div>
+          <div class="card-desc">
+            床墊為 <strong>1550×1900mm</strong>，介乎標準 5尺（1500×1900mm）與 5尺半之間。建議選購附可調較床板條的 5尺床架，或向本地傢俬店訂造 1550mm 特製床架。
           </div>
         </div>
       </div>
     </div>
     <button class="btn-claim" onclick="openClaim('bed')">🎁 我要認購 — 床架</button>
-  </div>
+  </section>
 
-  <!-- ===== 3. 衣櫃 ===== -->
-  <div class="category-section" data-category="wardrobe" data-gift="衣櫃">
-    <div class="category-label">
+  <!-- 3. 衣櫃 -->
+  <section class="category-section" id="wardrobe" data-category="wardrobe" data-gift="衣櫃">
+    <div class="category-header">
       <div class="icon">🚪</div>
       <h2>衣櫃</h2>
-      <div class="spec">W1500mm 以內</div>
+      <div class="spec">W≤1500mm</div>
     </div>
-    <div class="reference-note">
-      <strong>💡 參考示例</strong>：以下僅供參考，任何寬度 ≤1500mm 的衣櫃都可以。歡迎自由選擇你喜歡的款式！
-    </div>
-    <div class="product-grid">
+    <div class="product-list">
       <div class="product-card">
         <img class="card-img" src="https://www.ikea.com.hk/dairyfarm/hk/images/403/0840353_PE778701_S4.jpg" alt="IKEA PAX" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMDAgMjAwIj48cmVjdCB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgZmlsbD0iI2Y1ZWRlMyIvPjx0ZXh0IHg9IjEwMCIgeT0iMTAwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBkeT0iLjM1ZW0iIGZvbnQtZmFtaWx5PSJzYW5zLXNlcmlmIiBmb250LXNpemU9IjIuNXJlbSIgZmlsbD0iI2I4YjBhYSI+8J+bi7wvPC90ZXh0Pjwvc3ZnPg=='">
         <div class="card-body">
           <div class="card-name">IKEA PAX 衣櫃組合</div>
-          <div class="card-desc">白色 · 150×58×201cm · 可自由配置內部 · 含櫃框、掛衣桿、層板、網籃</div>
+          <div class="card-desc">白色 · 150×58×201cm · 可自由配置內部</div>
           <div class="card-price">HK$2,730</div>
           <div class="card-links">
-            <a class="link-ikea" href="https://www.ikea.com.hk/en/products/wardrobes-and-chest-of-drawers/system-wardrobes/pax-spr-09385673" target="_blank">IKEA 官方</a>
+            <a class="link-ikea" href="https://www.ikea.com.hk/en/products/wardrobes-and-chest-of-drawers/system-wardrobes/pax-spr-09385673" target="_blank" rel="noopener">IKEA</a>
           </div>
         </div>
       </div>
@@ -520,162 +699,162 @@ body {
         <img class="card-img" src="https://www.ikea.com.hk/dairyfarm/hk/images/235/0823547_PE775917_S4.jpg" alt="IKEA KLEPPSTAD" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMDAgMjAwIj48cmVjdCB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgZmlsbD0iI2Y1ZWRlMyIvPjx0ZXh0IHg9IjEwMCIgeT0iMTAwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBkeT0iLjM1ZW0iIGZvbnQtZmFtaWx5PSJzYW5zLXNlcmlmIiBmb250LXNpemU9IjIuNXJlbSIgZmlsbD0iI2I4YjBhYSI+8J+bi7wvPC90ZXh0Pjwvc3ZnPg=='">
         <div class="card-body">
           <div class="card-name">IKEA KLEPPSTAD 趟門衣櫃</div>
-          <div class="card-desc">白色 · 117×55×176cm · 暢銷款 · 三門 · 評分 4.0/5（29 評價）</div>
+          <div class="card-desc">白色 · 117×55×176cm · 三門暢銷款</div>
           <div class="card-price">HK$1,499</div>
           <div class="card-links">
-            <a class="link-ikea" href="https://www.ikea.com.hk/en/products/wardrobes-and-chest-of-drawers/wardrobes/kleppstad-art-30437241" target="_blank">IKEA 官方</a>
+            <a class="link-ikea" href="https://www.ikea.com.hk/en/products/wardrobes-and-chest-of-drawers/wardrobes/kleppstad-art-30437241" target="_blank" rel="noopener">IKEA</a>
           </div>
         </div>
       </div>
     </div>
     <button class="btn-claim" onclick="openClaim('wardrobe')">🎁 我要認購 — 衣櫃</button>
-  </div>
+  </section>
 
-  <!-- ===== 4. 冰箱 ===== -->
-  <div class="category-section" data-category="fridge" data-gift="冰箱 — Mitsubishi MR-CGX33EY-GBK">
-    <div class="category-label">
+  <!-- 4. 冰箱 -->
+  <section class="category-section" id="fridge" data-category="fridge" data-gift="冰箱 — Mitsubishi MR-CGX33EY-GBK">
+    <div class="category-header">
       <div class="icon">🧊</div>
       <h2>冰箱</h2>
-      <div class="spec">MR-CGX33EY-GBK · 328L 三門變頻</div>
+      <div class="spec">MR-CGX33EY-GBK · 328L</div>
     </div>
-    <div class="product-grid">
+    <div class="product-list">
       <div class="product-card">
         <img class="card-img" src="https://medias.fortress.com.hk/publishing/FTRHK-14051968-FRONT-zoom.png" alt="Mitsubishi MR-CGX33EY-GBK" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMDAgMjAwIj48cmVjdCB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgZmlsbD0iI2Y1ZWRlMyIvPjx0ZXh0IHg9IjEwMCIgeT0iMTAwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBkeT0iLjM1ZW0iIGZvbnQtZmFtaWx5PSJzYW5zLXNlcmlmIiBmb250LXNpemU9IjIuNXJlbSIgZmlsbD0iI2I4YjBhYSI+8J+bi7wvPC90ZXh0Pjwvc3ZnPg=='">
         <div class="card-body">
           <div class="card-name">Mitsubishi 三菱 MR-CGX33EY-GBK</div>
-          <div class="card-desc">328L 三門變頻雪櫃 · 曜影夜黑 · 一級能源效益</div>
+          <div class="card-desc">328L 三門變頻 · 曜影夜黑 · 一級能源效益</div>
           <div class="card-price">HK$5,295 – $5,450</div>
           <div class="card-links">
-            <a class="link-fortress" href="https://www.fortress.com.hk/zh-hk/product/328公升變頻三門下置式雪櫃-mr-cgx33ey-gbk-h/p/BP_14051968" target="_blank">Fortress 豐澤</a>
-            <a class="link-sce" href="https://www.sce.com.hk/products/mr-cgx33ey-gbk" target="_blank">SCE</a>
-            <a class="link-price" href="https://www.price.com.hk/product.php?p=682429" target="_blank">Price.com.hk</a>
+            <a class="link-fortress" href="https://www.fortress.com.hk/zh-hk/product/328公升變頻三門下置式雪櫃-mr-cgx33ey-gbk-h/p/BP_14051968" target="_blank" rel="noopener">豐澤</a>
+            <a class="link-sce" href="https://www.sce.com.hk/products/mr-cgx33ey-gbk" target="_blank" rel="noopener">SCE</a>
+            <a class="link-price" href="https://www.price.com.hk/product.php?p=682429" target="_blank" rel="noopener">Price</a>
           </div>
         </div>
       </div>
     </div>
     <button class="btn-claim" onclick="openClaim('fridge')">🎁 我要認購 — 冰箱</button>
-  </div>
+  </section>
 
-  <!-- ===== 5. 洗衣機 ===== -->
-  <div class="category-section" data-category="washer" data-gift="洗衣機 — HITACHI LTL-065SM00">
-    <div class="category-label">
+  <!-- 5. 洗衣機 -->
+  <section class="category-section" id="washer" data-category="washer" data-gift="洗衣機 — HITACHI LTL-065SM00">
+    <div class="category-header">
       <div class="icon">🫧</div>
       <h2>洗衣機</h2>
-      <div class="spec">LTL-065SM00 · 6.5kg 日式</div>
+      <div class="spec">LTL-065SM00 · 6.5kg</div>
     </div>
-    <div class="product-grid">
+    <div class="product-list">
       <div class="product-card">
         <img class="card-img" src="https://medias.fortress.com.hk/publishing/FTRHK-14013857-FRONT-zoom.png" alt="HITACHI LTL-065SM00" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMDAgMjAwIj48cmVjdCB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgZmlsbD0iI2Y1ZWRlMyIvPjx0ZXh0IHg9IjEwMCIgeT0iMTAwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBkeT0iLjM1ZW0iIGZvbnQtZmFtaWx5PSJzYW5zLXNlcmlmIiBmb250LXNpemU9IjIuNXJlbSIgZmlsbD0iI2I4YjBhYSI+8J+bi7wvPC90ZXh0Pjwvc3ZnPg=='">
         <div class="card-body">
           <div class="card-name">HITACHI 日立 LTL-065SM00</div>
-          <div class="card-desc">5S Compact Series · 6.5kg · 830轉 · 日式企缸</div>
+          <div class="card-desc">6.5kg · 830轉 · 日式企缸</div>
           <div class="card-price">HK$1,880 – $2,050</div>
           <div class="card-links">
-            <a class="link-fortress" href="https://www.fortress.com.hk/en/product/5s-compact-series-6.5kg-830rpm-japan-type-washer-ltl065sm00/p/BP_14013857" target="_blank">Fortress 豐澤</a>
-            <a class="link-broadway" href="https://www.broadwaylifestyle.com/products/ltl-065sm00-6-5kg-5s-compact-series-single-type-washing-machine" target="_blank">百老匯</a>
-            <a class="link-yoho" href="https://www.yohohongkong.com/zh-hk/product/253139" target="_blank">YOHO 友和</a>
-            <a class="link-hktv" href="https://www.hktvmall.com/hktv/zh/main/HITACHI-%E6%97%A5%E7%AB%8B%E5%AE%B6%E9%9B%BB%E5%AE%98%E6%96%B9%E6%97%97%E8%89%A6%E5%BA%97/s/B1186001/p/B1186001_S_970323100094" target="_blank">HKTVmall</a>
+            <a class="link-fortress" href="https://www.fortress.com.hk/en/product/5s-compact-series-6.5kg-830rpm-japan-type-washer-ltl065sm00/p/BP_14013857" target="_blank" rel="noopener">豐澤</a>
+            <a class="link-broadway" href="https://www.broadwaylifestyle.com/products/ltl-065sm00-6-5kg-5s-compact-series-single-type-washing-machine" target="_blank" rel="noopener">百老匯</a>
+            <a class="link-yoho" href="https://www.yohohongkong.com/zh-hk/product/253139" target="_blank" rel="noopener">YOHO</a>
+            <a class="link-hktv" href="https://www.hktvmall.com/hktv/zh/main/HITACHI-%E6%97%A5%E7%AB%8B%E5%AE%B6%E9%9B%BB%E5%AE%98%E6%96%B9%E6%97%97%E8%89%A6%E5%BA%97/s/B1186001/p/B1186001_S_970323100094" target="_blank" rel="noopener">HKTVmall</a>
           </div>
         </div>
       </div>
     </div>
     <button class="btn-claim" onclick="openClaim('washer')">🎁 我要認購 — 洗衣機</button>
-  </div>
+  </section>
 
-  <!-- ===== 6. 微波烤箱 ===== -->
-  <div class="category-section" data-category="microwave" data-gift="微波烤箱 — Toshiba MW3-SAC24SE">
-    <div class="category-label">
+  <!-- 6. 微波烤箱 -->
+  <section class="category-section" id="microwave" data-category="microwave" data-gift="微波烤箱 — Toshiba MW3-SAC24SE">
+    <div class="category-header">
       <div class="icon">🍳</div>
       <h2>微波烤箱</h2>
-      <div class="spec">MW3-SAC24SE · 24L 多功能</div>
+      <div class="spec">MW3-SAC24SE · 24L</div>
     </div>
-    <div class="product-grid">
+    <div class="product-list">
       <div class="product-card">
         <img class="card-img" src="https://medias.fortress.com.hk/publishing/FTRHK-13137284-FRONT-zoom.png" alt="Toshiba MW3-SAC24SE" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMDAgMjAwIj48cmVjdCB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgZmlsbD0iI2Y1ZWRlMyIvPjx0ZXh0IHg9IjEwMCIgeT0iMTAwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBkeT0iLjM1ZW0iIGZvbnQtZmFtaWx5PSJzYW5zLXNlcmlmIiBmb250LXNpemU9IjIuNXJlbSIgZmlsbD0iI2I4YjBhYSI+8J+bi7wvPC90ZXh0Pjwvc3ZnPg=='">
         <div class="card-body">
           <div class="card-name">Toshiba 東芝 MW3-SAC24SE</div>
-          <div class="card-desc">24L 多功能烤箱 · 健康氣炸 · AI 感應技術</div>
+          <div class="card-desc">24L 多功能 · 健康氣炸 · AI 感應</div>
           <div class="card-price">HK$1,227 – $1,758</div>
           <div class="card-links">
-            <a class="link-fortress" href="https://www.fortress.com.hk/en/product/mw3-sac24se-24l-multi-function-oven-with-healthy-air-fry/p/BP_13137284" target="_blank">Fortress 豐澤</a>
-            <a class="link-yoho" href="https://www.yohohongkong.com/zh-hk/product/112737" target="_blank">YOHO 友和</a>
+            <a class="link-fortress" href="https://www.fortress.com.hk/en/product/mw3-sac24se-24l-multi-function-oven-with-healthy-air-fry/p/BP_13137284" target="_blank" rel="noopener">豐澤</a>
+            <a class="link-yoho" href="https://www.yohohongkong.com/zh-hk/product/112737" target="_blank" rel="noopener">YOHO</a>
           </div>
         </div>
       </div>
     </div>
     <button class="btn-claim" onclick="openClaim('microwave')">🎁 我要認購 — 微波烤箱</button>
-  </div>
+  </section>
 
-  <!-- ===== 7. 抽濕機 ===== -->
-  <div class="category-section" data-category="dehumidifier" data-gift="抽濕機 — Carrier DC-22VSB">
-    <div class="category-label">
+  <!-- 7. 抽濕機 -->
+  <section class="category-section" id="dehumidifier" data-category="dehumidifier" data-gift="抽濕機 — Carrier DC-22VSB">
+    <div class="category-header">
       <div class="icon">💧</div>
       <h2>抽濕機</h2>
       <div class="spec">DC-22VSB · 22L 變頻</div>
     </div>
-    <div class="product-grid">
+    <div class="product-list">
       <div class="product-card">
         <img class="card-img" src="https://medias.fortress.com.hk/publishing/FTRHK-13151449-FRONT-zoom.png" alt="Carrier DC-22VSB" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMDAgMjAwIj48cmVjdCB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgZmlsbD0iI2Y1ZWRlMyIvPjx0ZXh0IHg9IjEwMCIgeT0iMTAwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBkeT0iLjM1ZW0iIGZvbnQtZmFtaWx5PSJzYW5zLXNlcmlmIiBmb250LXNpemU9IjIuNXJlbSIgZmlsbD0iI2I4YjBhYSI+8J+bi7wvPC90ZXh0Pjwvc3ZnPg=='">
         <div class="card-body">
           <div class="card-name">Carrier 開利 DC-22VSB</div>
-          <div class="card-desc">22L 二合一空氣淨化變頻抽濕機</div>
+          <div class="card-desc">22L · 二合一空氣淨化變頻</div>
           <div class="card-price">HK$2,480</div>
           <div class="card-links">
-            <a class="link-fortress" href="https://www.fortress.com.hk/en/product/dc-22vsb-22l-2-in-1-air-purifying-inverter-dehumidifier/p/BP_13151449" target="_blank">Fortress 豐澤</a>
-            <a class="link-yoho" href="https://www.yohohongkong.com/zh-hk/product/88128" target="_blank">YOHO 友和</a>
+            <a class="link-fortress" href="https://www.fortress.com.hk/en/product/dc-22vsb-22l-2-in-1-air-purifying-inverter-dehumidifier/p/BP_13151449" target="_blank" rel="noopener">豐澤</a>
+            <a class="link-yoho" href="https://www.yohohongkong.com/zh-hk/product/88128" target="_blank" rel="noopener">YOHO</a>
           </div>
         </div>
       </div>
     </div>
     <button class="btn-claim" onclick="openClaim('dehumidifier')">🎁 我要認購 — 抽濕機</button>
-  </div>
+  </section>
 
-  <!-- ===== 8. Tefal 慳位廚具 ===== -->
-  <div class="category-section" data-category="tefal" data-gift="Tefal 慳位廚具">
-    <div class="category-label">
+  <!-- 8. Tefal 廚具 -->
+  <section class="category-section" id="tefal" data-category="tefal" data-gift="Tefal 慳位廚具">
+    <div class="category-header">
       <div class="icon">🍲</div>
       <h2>Tefal 慳位廚具</h2>
-      <div class="spec">Ingenio 靈巧疊疊鑊系列</div>
+      <div class="spec">Ingenio 靈巧疊疊鑊</div>
     </div>
-    <div class="product-grid">
+    <div class="product-list">
       <div class="product-card">
         <img class="card-img" src="https://www.tefal.com.hk/medias/?context=bWFzdGVyfGltYWdlc3w0NTQ5MHxpbWFnZS9qcGVnfGFXMWhaMlZ6TDJnM1pDOW9Nemt2TWpreU1EZzRPRE14TXpRME9UUXxmMzdhYjUxNmFhMDVkYmM4Y2I1ZjBiN2UyYzgyYTMwZDhjNmY0MTAwMGI5OGI5NDUzY2Y1YzA0MDlhZjFhOTE5" alt="Tefal Ingenio 8件套" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMDAgMjAwIj48cmVjdCB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgZmlsbD0iI2Y1ZWRlMyIvPjx0ZXh0IHg9IjEwMCIgeT0iMTAwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBkeT0iLjM1ZW0iIGZvbnQtZmFtaWx5PSJzYW5zLXNlcmlmIiBmb250LXNpemU9IjIuNXJlbSIgZmlsbD0iI2I4YjBhYSI+8J+bi7wvPC90ZXh0Pjwvc3ZnPg=='">
         <div class="card-body">
-          <div class="card-name">Tefal Ingenio 靈巧疊疊鑊 8 件套裝</div>
-          <div class="card-desc">易潔廚具 · 可疊放收納 · 含可拆手柄 · L6729012</div>
+          <div class="card-name">Tefal Ingenio 靈巧疊疊鑊 8件套</div>
+          <div class="card-desc">易潔 · 可疊放 · 含可拆手柄 · L6729012</div>
           <div class="card-price">HK$699</div>
           <div class="card-links">
-            <a class="link-tefal" href="https://www.tefal.com.hk/zh/%E9%8D%8B%E5%85%B7%E5%8F%8A%E5%BB%9A%E5%85%B7/%E9%8D%8B%E5%85%B7/Ingenio-%E9%9D%88%E5%B7%A7%E7%96%8A%E7%96%8A%E9%91%8A8%E4%BB%B6%E5%A5%97%E8%A3%9D%E6%98%93%E6%BD%94%E5%BB%9A%E5%85%B7/p/2100100821" target="_blank">Tefal 官方</a>
-            <a class="link-fortress" href="https://www.fortress.com.hk/en/search?q=Ingenio&searchBy=keywords" target="_blank">Fortress 豐澤</a>
+            <a class="link-tefal" href="https://www.tefal.com.hk/zh/%E9%8D%8B%E5%85%B7%E5%8F%8A%E5%BB%9A%E5%85%B7/%E9%8D%8B%E5%85%B7/Ingenio-%E9%9D%88%E5%B7%A7%E7%96%8A%E7%96%8A%E9%91%8A8%E4%BB%B6%E5%A5%97%E8%A3%9D%E6%98%93%E6%BD%94%E5%BB%9A%E5%85%B7/p/2100100821" target="_blank" rel="noopener">Tefal</a>
+            <a class="link-fortress" href="https://www.fortress.com.hk/en/search?q=Ingenio&searchBy=keywords" target="_blank" rel="noopener">豐澤</a>
           </div>
         </div>
       </div>
       <div class="product-card">
         <img class="card-img" src="https://www.tefal.com.hk/medias/?context=bWFzdGVyfGltYWdlc3w0NDEyOXxpbWFnZS9qcGVnfGFXMWhaMlZ6TDJoaFlpOW9aVEF2TWpreU1EazFNelE1T0Rnek1UZ3wyYzZiZmQzZGRjODMxMmUzNWIyMWM1MTE0YzM0YmE1YjljN2I4ZjZlYjk3ODk5YzI2NTNiMjhhMjU2MGZmZDFl" alt="Tefal Ingenio 3件套" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMDAgMjAwIj48cmVjdCB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgZmlsbD0iI2Y1ZWRlMyIvPjx0ZXh0IHg9IjEwMCIgeT0iMTAwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBkeT0iLjM1ZW0iIGZvbnQtZmFtaWx5PSJzYW5zLXNlcmlmIiBmb250LXNpemU9IjIuNXJlbSIgZmlsbD0iI2I4YjBhYSI+8J+bi7wvPC90ZXh0Pjwvc3ZnPg=='">
         <div class="card-body">
-          <div class="card-name">Tefal Ingenio 3 件套裝（入門）</div>
-          <div class="card-desc">基本套裝 · 含 20cm/24cm 鑊 + 手柄 · L6569012</div>
+          <div class="card-name">Tefal Ingenio 3件套（入門）</div>
+          <div class="card-desc">基本套裝 · 20cm/24cm 鑊 + 手柄 · L6569012</div>
           <div class="card-price">HK$390 – $397</div>
           <div class="card-links">
-            <a class="link-tefal" href="https://www.tefal.com.hk/zh/%E9%8D%8B%E5%85%B7%E5%8F%8A%E5%BB%9A%E5%85%B7/%E9%8D%8B%E5%85%B7/Ingenio-%E9%9D%88%E5%B7%A7%E7%96%8A%E7%96%8A%E9%91%8A3%E4%BB%B6%E5%A5%97%E8%A3%9D%E6%98%93%E6%BD%94%E5%BB%9A%E5%85%B7/p/2100105273" target="_blank">Tefal 官方</a>
+            <a class="link-tefal" href="https://www.tefal.com.hk/zh/%E9%8D%8B%E5%85%B7%E5%8F%8A%E5%BB%9A%E5%85%B7/%E9%8D%8B%E5%85%B7/Ingenio-%E9%9D%88%E5%B7%A7%E7%96%8A%E7%96%8A%E9%91%8A3%E4%BB%B6%E5%A5%97%E8%A3%9D%E6%98%93%E6%BD%94%E5%BB%9A%E5%85%B7/p/2100105273" target="_blank" rel="noopener">Tefal</a>
           </div>
         </div>
       </div>
     </div>
     <button class="btn-claim" onclick="openClaim('tefal')">🎁 我要認購 — Tefal 廚具</button>
-  </div>
+  </section>
 
-</div><!-- .container -->
+</main>
 
 <!-- Footer -->
-<div class="footer">
+<footer class="footer">
   <span class="ring">💍</span>
   <div class="names">承恩 <em>&</em> 麗娟</div>
   <div class="thanks">感謝你的祝福與心意 ❤️</div>
-</div>
+</footer>
 
 <!-- Back to Top -->
-<button class="back-to-top" id="backToTop" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="回到頂部">&#9650;</button>
+<button class="back-to-top" id="backToTop" aria-label="回到頂部">↑</button>
 
 <script>
 (function() {
@@ -701,6 +880,19 @@ body {
     tefal: 'Tefal 慳位廚具',
   };
 
+  // === Reference toggle ===
+  const refToggle = document.getElementById('refToggle');
+  const refContent = document.getElementById('refContent');
+  if (refToggle && refContent) {
+    refToggle.addEventListener('click', function() {
+      const expanded = this.getAttribute('aria-expanded') === 'true';
+      this.setAttribute('aria-expanded', !expanded);
+      this.classList.toggle('open');
+      refContent.style.maxHeight = expanded ? '0' : refContent.scrollHeight + 'px';
+    });
+  }
+
+  // === CSV Parser ===
   function parseCSV(text) {
     const rows = [];
     let row = [], cell = '', inQuotes = false;
@@ -722,17 +914,19 @@ body {
     return rows;
   }
 
+  // === Apply Claims ===
   function applyClaims(claims, totalRecords) {
     const statusEl = document.getElementById('claim-status');
+    const progressFill = document.getElementById('progressFill');
     const sections = document.querySelectorAll('.category-section[data-gift]');
+    const pills = document.querySelectorAll('.cat-pill');
     let claimedCount = 0;
+    const totalSections = sections.length;
 
     sections.forEach(sec => {
       const gift = sec.getAttribute('data-gift');
       if (!gift) return;
 
-      // Match claims: exact match or prefix match (for multi-product categories
-      // where form entry includes product name, e.g. "沙發 — IKEA KIVIK 雙人沙發")
       let matchedClaims = claims[gift];
       if (!matchedClaims) {
         for (const key in claims) {
@@ -748,25 +942,34 @@ body {
       sec.classList.add('claimed');
       sec.setAttribute('data-claimed', 'true');
       sec.setAttribute('data-claimed-by', matchedClaims.join('、'));
+
       const btn = sec.querySelector('.btn-claim');
       if (btn) {
         btn.disabled = true;
         btn.textContent = '✅ 已認購 — ' + matchedClaims.join('、');
         btn.classList.add('claimed-badge');
       }
+
+      // Update pill
+      const pill = document.querySelector('.cat-pill[data-cat="' + sec.getAttribute('data-category') + '"]');
+      if (pill) pill.classList.add('claimed');
     });
+
+    // Progress
+    const pct = totalSections > 0 ? Math.round((claimedCount / totalSections) * 100) : 0;
+    if (progressFill) progressFill.style.width = pct + '%';
 
     if (statusEl) {
       statusEl.classList.remove('skeleton-pulse');
       if (totalRecords > 0) {
-        statusEl.textContent = '📋 共有 ' + totalRecords + ' 項認購記錄，' + claimedCount + ' 個項目已被認購';
+        statusEl.textContent = claimedCount + '/' + totalSections + ' 已認購';
       } else {
-        statusEl.textContent = '📋 暫無認購記錄';
+        statusEl.textContent = '暫無認購';
       }
-      setTimeout(() => { statusEl.style.opacity = '0.5'; }, 5000);
     }
   }
 
+  // === Load Claims ===
   function loadClaims() {
     fetch(SHEET_CSV)
       .then(r => r.text())
@@ -779,7 +982,6 @@ body {
             const gift = row[1].trim();
             const name = row[2].trim();
             const msg = row[3] ? row[3].trim() : '';
-            // Skip cancelled/duplicate rows
             if (msg.includes('已取消') || msg.includes('CANCELLED')) continue;
             if (gift && name) {
               if (!claims[gift]) claims[gift] = [];
@@ -793,38 +995,53 @@ body {
         const statusEl = document.getElementById('claim-status');
         if (statusEl) {
           statusEl.classList.remove('skeleton-pulse');
-          statusEl.textContent = '⚠️ 無法載入認購資料，請重新整理';
+          statusEl.textContent = '⚠️ 無法載入';
         }
         console.error('Failed to load claims:', err);
       });
   }
 
+  // === Claim Action ===
   window.openClaim = function(category) {
-    // Check if already claimed — each item can only be claimed once
     const sec = document.querySelector('.category-section[data-category="' + category + '"]');
     if (sec && sec.getAttribute('data-claimed') === 'true') {
       const claimedBy = sec.getAttribute('data-claimed-by') || '他人';
       const giftName = categoryNames[category] || category;
-      alert('⚠️ 此項目已被認購\n\n' +
-        '項目：' + giftName + '\n' +
-        '認購人：' + claimedBy + '\n\n' +
-        '每個禮物只能被認購一次，請選擇其他項目。');
+      alert('⚠️ 此項目已被認購\n\n項目：' + giftName + '\n認購人：' + claimedBy + '\n\n每個禮物只能被認購一次，請選擇其他項目。');
       return;
     }
     const encodedName = encodeURIComponent(categoryNames[category] || category);
     window.open(FORM_URL + '?usp=pp_url&entry.2005677469=' + encodedName, '_blank');
   };
 
+  // === Init ===
   if (document.readyState !== 'loading') loadClaims();
   else document.addEventListener('DOMContentLoaded', loadClaims);
-
   setInterval(loadClaims, CONFIG.POLL_INTERVAL);
 
+  // === Back to Top ===
   const btt = document.getElementById('backToTop');
   window.addEventListener('scroll', function() {
-    if (window.scrollY > 400) btt.classList.add('visible');
+    if (window.scrollY > 500) btt.classList.add('visible');
     else btt.classList.remove('visible');
-  });
+  }, { passive: true });
+
+  // === Active Pill Tracking ===
+  const pills = document.querySelectorAll('.cat-pill');
+  const sections = document.querySelectorAll('.category-section[id]');
+
+  function updateActivePill() {
+    let current = '';
+    sections.forEach(sec => {
+      const rect = sec.getBoundingClientRect();
+      if (rect.top <= 120) current = sec.id;
+    });
+    pills.forEach(p => {
+      p.classList.toggle('active', p.getAttribute('href') === '#' + current);
+    });
+  }
+  window.addEventListener('scroll', updateActivePill, { passive: true });
+  updateActivePill();
 })();
 </script>
 </body>
