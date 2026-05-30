@@ -818,16 +818,28 @@ body {
       // Direct match (new form format)
       let matchedClaims = claims[gift];
 
-      // Legacy format matching: only match on model/brand identifiers, NOT generic category names
+      // Legacy format matching: try model number overlap, then Chinese keyword fallback
       if (!matchedClaims) {
         for (const key in claims) {
-          // Extract model numbers / brand+model identifiers (e.g., MR-CGX33EY-GBK, MW3-SAC24SE)
-          const giftModels = gift.match(/[A-Z0-9]+[\-][A-Z0-9]+/g) || [];
-          const keyModels = key.match(/[A-Z0-9]+[\-][A-Z0-9]+/g) || [];
-          // Match only if at least one model number overlaps
-          if (giftModels.length > 0 && keyModels.length > 0 && giftModels.some(m => keyModels.includes(m))) {
+          // Step 1: Try hyphenated model numbers (MR-CGX33EY-GBK, MW3-SAC24SE)
+          const giftHyphen = gift.match(/[A-Z0-9]+[\-][A-Z0-9]+/g) || [];
+          const keyHyphen = key.match(/[A-Z0-9]+[\-][A-Z0-9]+/g) || [];
+          if (giftHyphen.length > 0 && keyHyphen.length > 0 && giftHyphen.some(m => keyHyphen.includes(m))) {
             if (!matchedClaims) matchedClaims = [];
             matchedClaims = matchedClaims.concat(claims[key]);
+            continue;
+          }
+          // Step 2: If neither has hyphenated models, fall back to Chinese keyword overlap
+          // (handles product swaps like PAX 衣櫃 → KLEPPSTAD 衣櫃)
+          if (giftHyphen.length === 0 && keyHyphen.length === 0) {
+            const giftCn = gift.match(/[\u4e00-\u9fff]{2,}/g) || [];
+            const keyCn = key.match(/[\u4e00-\u9fff]{2,}/g) || [];
+            // Check substring overlap (e.g., "衣櫃" in key matches "趟門衣櫃" in gift)
+            const hasCnOverlap = giftCn.some(gc => keyCn.some(kc => gc.includes(kc) || kc.includes(gc)));
+            if (hasCnOverlap) {
+              if (!matchedClaims) matchedClaims = [];
+              matchedClaims = matchedClaims.concat(claims[key]);
+            }
           }
         }
       }
@@ -866,7 +878,7 @@ body {
 
   // === Load Claims from all tabs ===
   const SHEET_TABS = [
-    { gid: 1779346334, nameCol: 1, giftCol: 2, msgCol: 3 },  // 表單回覆 2: [1]姓名, [2]禮品
+    { gid: 1779346334, nameCol: 1, giftCol: 4, msgCol: 3 },  // 表單回覆 2: [1]姓名, [4]禮品 (dup at [2])
     { gid: 1863988431, nameCol: 2, giftCol: 1, msgCol: 3 },  // 表單回覆 1: [1]禮物, [2]姓名
     { gid: 1108610052, nameCol: 2, giftCol: 1, msgCol: 3 },  // Form Responses 1: [1]禮物, [2]姓名
   ];
