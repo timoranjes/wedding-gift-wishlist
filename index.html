@@ -729,14 +729,29 @@ body {
 
     sections.forEach(sec => {
       const gift = sec.getAttribute('data-gift');
-      if (!gift || !claims[gift]) return;
+      if (!gift) return;
+
+      // Match claims: exact match or prefix match (for multi-product categories
+      // where form entry includes product name, e.g. "沙發 — IKEA KIVIK 雙人沙發")
+      let matchedClaims = claims[gift];
+      if (!matchedClaims) {
+        for (const key in claims) {
+          if (key.startsWith(gift + ' — ') || key.startsWith(gift + ' - ')) {
+            if (!matchedClaims) matchedClaims = [];
+            matchedClaims = matchedClaims.concat(claims[key]);
+          }
+        }
+      }
+      if (!matchedClaims) return;
 
       claimedCount++;
       sec.classList.add('claimed');
+      sec.setAttribute('data-claimed', 'true');
+      sec.setAttribute('data-claimed-by', matchedClaims.join('、'));
       const btn = sec.querySelector('.btn-claim');
       if (btn) {
         btn.disabled = true;
-        btn.textContent = '✅ 已認購 — ' + claims[gift].join('、');
+        btn.textContent = '✅ 已認購 — ' + matchedClaims.join('、');
         btn.classList.add('claimed-badge');
       }
     });
@@ -782,6 +797,17 @@ body {
   }
 
   window.openClaim = function(category) {
+    // Check if already claimed — each item can only be claimed once
+    const sec = document.querySelector('.category-section[data-category="' + category + '"]');
+    if (sec && sec.getAttribute('data-claimed') === 'true') {
+      const claimedBy = sec.getAttribute('data-claimed-by') || '他人';
+      const giftName = categoryNames[category] || category;
+      alert('⚠️ 此項目已被認購\n\n' +
+        '項目：' + giftName + '\n' +
+        '認購人：' + claimedBy + '\n\n' +
+        '每個禮物只能被認購一次，請選擇其他項目。');
+      return;
+    }
     const encodedName = encodeURIComponent(categoryNames[category] || category);
     window.open(FORM_URL + '?usp=pp_url&entry.2005677469=' + encodedName, '_blank');
   };
