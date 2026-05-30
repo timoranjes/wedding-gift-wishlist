@@ -526,7 +526,7 @@ body {
     <a href="#washer" class="cat-pill" data-cat="washer"><span class="pill-dot"></span>洗衣機</a>
     <a href="#microwave" class="cat-pill" data-cat="microwave"><span class="pill-dot"></span>微波烤箱</a>
     <a href="#dehumidifier" class="cat-pill" data-cat="dehumidifier"><span class="pill-dot"></span>抽濕機</a>
-    <a href="#tefal" class="cat-pill" data-cat="tefal8"><span class="pill-dot"></span>Tefal 廚具</a>
+    <a href="#tefal" class="cat-pill" data-cat="tefal"><span class="pill-dot"></span>Tefal 廚具</a>
   </div>
 </nav>
 
@@ -710,7 +710,7 @@ body {
   </section>
 
   <!-- 8. Tefal 廚具 -->
-  <section class="category-section" id="tefal" data-category="tefal8" data-gift="Tefal Ingenio 8件套 廚具">
+  <section class="category-section" id="tefal" data-category="tefal" data-gift="Tefal 廚具">
     <div class="category-header">
       <div class="icon">🍲</div>
       <h2>Tefal 慳位廚具 <span style="font-size:0.6em;color:#B8926A;font-weight:400;">（二選一即可）</span></h2>
@@ -741,7 +741,7 @@ body {
         </div>
       </div>
     </div>
-    <button class="btn-claim" onclick="openClaim('tefal8')">🎁 我要認購 — Tefal 廚具</button>
+    <button class="btn-claim" onclick="openClaim('tefal')">🎁 我要認購 — Tefal 廚具</button>
   </section>
 
 </main>
@@ -777,8 +777,7 @@ body {
     washer: 'HITACHI LTL-065SM00 洗衣機',
     microwave: 'Toshiba MW3-SAC24SE 微波烤箱',
     dehumidifier: 'Carrier DC-22VSB 抽濕機',
-    tefal8: 'Tefal Ingenio 8件套 廚具',
-    tefal3: 'Tefal Ingenio 3件套 廚具',
+    tefal: 'Tefal 廚具',
   };
 
   // === CSV Parser ===
@@ -858,37 +857,48 @@ body {
     }
   }
 
-  // === Load Claims ===
+  // === Load Claims from all tabs ===
+  const SHEET_TABS = [
+    // {gid, nameCol, giftCol, msgCol, label}
+    { gid: 1779346334, nameCol: 1, giftCol: 2, msgCol: 3, label: '新表單' },  // 表單回覆 2: [1]姓名, [2]禮品
+    { gid: 1863988431, nameCol: 2, giftCol: 1, msgCol: 3, label: '舊表單1' },  // 表單回覆 1: [1]禮物, [2]姓名
+    { gid: 1108610052, nameCol: 2, giftCol: 1, msgCol: 3, label: '舊表單2' },  // Form Responses 1: [1]禮物, [2]姓名
+  ];
+
   function loadClaims() {
-    fetch(SHEET_CSV)
-      .then(r => r.text())
-      .then(text => {
-        const rows = parseCSV(text);
-        const claims = {};
-        for (let i = 1; i < rows.length; i++) {
-          const row = rows[i];
-          // 表單回覆 2: [0]時間戳記, [1]姓名, [2]選擇禮品, [3]留言
-          if (row.length >= 3 && row[1] && row[2]) {
-            const name = row[1].trim();
-            const gift = row[2].trim();
-            const msg = row[3] ? row[3].trim() : '';
-            if (msg.includes('已取消') || msg.includes('CANCELLED')) continue;
-            if (gift && name) {
-              if (!claims[gift]) claims[gift] = [];
-              claims[gift].push(name);
+    const allClaims = {};
+    let totalRows = 0;
+    let done = 0;
+
+    SHEET_TABS.forEach(tab => {
+      const csvUrl = 'https://docs.google.com/spreadsheets/d/' + CONFIG.SHEET_ID + '/gviz/tq?tqx=out:csv&gid=' + tab.gid;
+      fetch(csvUrl)
+        .then(r => r.text())
+        .then(text => {
+          const rows = parseCSV(text);
+          for (let i = 1; i < rows.length; i++) {
+            const row = rows[i];
+            if (row.length >= 3 && row[tab.nameCol] && row[tab.giftCol]) {
+              const name = row[tab.nameCol].trim();
+              const gift = row[tab.giftCol].trim();
+              const msg = row[tab.msgCol] ? row[tab.msgCol].trim() : '';
+              if (msg.includes('已取消') || msg.includes('CANCELLED')) continue;
+              if (gift && name) {
+                if (!allClaims[gift]) allClaims[gift] = [];
+                if (!allClaims[gift].includes(name)) allClaims[gift].push(name);
+              }
             }
           }
-        }
-        applyClaims(claims, rows.length - 1);
-      })
-      .catch(err => {
-        const statusEl = document.getElementById('claim-status');
-        if (statusEl) {
-          statusEl.classList.remove('skeleton-pulse');
-          statusEl.textContent = '⚠️ 無法載入';
-        }
-        console.error('Failed to load claims:', err);
-      });
+          totalRows += rows.length - 1;
+        })
+        .catch(() => { /* skip failed tab */ })
+        .finally(() => {
+          done++;
+          if (done === SHEET_TABS.length) {
+            applyClaims(allClaims, totalRows);
+          }
+        });
+    });
   }
 
   // === Claim Action ===
