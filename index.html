@@ -214,49 +214,6 @@ body {
 .cat-pill.active .pill-dot { background: var(--white); }
 .cat-pill.claimed .pill-dot { background: var(--sage); }
 
-/* === Reference Note (Global) === */
-.global-reference {
-  max-width: 1100px;
-  margin: 1rem auto 0;
-  padding: 0 1.25rem;
-}
-.ref-toggle {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0.65rem 1rem;
-  background: var(--cream-dark);
-  border: 1px solid rgba(212,165,116,0.2);
-  border-radius: var(--radius-sm);
-  font-size: 0.8rem;
-  color: var(--warm-gray);
-  cursor: pointer;
-  font-family: 'Noto Sans TC', sans-serif;
-  transition: background 0.2s;
-}
-.ref-toggle:hover { background: var(--blush-light); }
-.ref-toggle .arrow {
-  transition: transform 0.25s ease;
-  font-size: 0.7rem;
-}
-.ref-toggle.open .arrow { transform: rotate(180deg); }
-.ref-content {
-  max-height: 0;
-  overflow: hidden;
-  transition: max-height 0.3s ease;
-}
-.ref-content-inner {
-  padding: 0.75rem 1rem;
-  font-size: 0.78rem;
-  color: var(--warm-gray);
-  line-height: 1.6;
-  background: var(--cream-dark);
-  border-top: 1px solid rgba(212,165,116,0.15);
-  border-radius: 0 0 var(--radius-sm) var(--radius-sm);
-}
-.ref-content-inner strong { color: var(--charcoal); font-weight: 500; }
-
 /* === Layout === */
 .container {
   max-width: 1100px;
@@ -573,19 +530,6 @@ body {
   </div>
 </nav>
 
-<!-- Global Reference -->
-<div class="global-reference">
-  <button class="ref-toggle" id="refToggle" aria-expanded="false">
-    <span>💡 認購說明 — 任何符合尺寸的款式都可以</span>
-    <span class="arrow">▼</span>
-  </button>
-  <div class="ref-content" id="refContent">
-    <div class="ref-content-inner">
-      <strong>自由選擇：</strong>下列產品僅供參考，任何符合尺寸的款式都可以認購。歡迎選擇你喜歡的款式和購買渠道！
-    </div>
-  </div>
-</div>
-
 <!-- Products -->
 <main class="container">
 
@@ -835,18 +779,6 @@ body {
     dehumidifier: '抽濕機 — Carrier DC-22VSB',
     tefal: 'Tefal 慳位廚具',
   };
-
-  // === Reference toggle ===
-  const refToggle = document.getElementById('refToggle');
-  const refContent = document.getElementById('refContent');
-  if (refToggle && refContent) {
-    refToggle.addEventListener('click', function() {
-      const expanded = this.getAttribute('aria-expanded') === 'true';
-      this.setAttribute('aria-expanded', !expanded);
-      this.classList.toggle('open');
-      refContent.style.maxHeight = expanded ? '0' : refContent.scrollHeight + 'px';
-    });
-  }
 
   // === CSV Parser ===
   function parseCSV(text) {
