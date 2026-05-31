@@ -431,26 +431,6 @@ body {
 .category-section.claimed .product-card { opacity: 0.65; }
 .category-section.claimed .category-header .icon { opacity: 0.5; }
 
-/* === Blessings (per-item) === */
-.blessing-container {
-  margin: 0.75rem 0 0;
-  padding: 0;
-}
-.blessing-msg {
-  font-size: 0.82rem;
-  color: var(--gold-dark);
-  padding: 0.4rem 0.8rem;
-  margin-bottom: 0.25rem;
-  background: var(--blush);
-  border-left: 3px solid var(--gold);
-  border-radius: 0 6px 6px 0;
-  line-height: 1.5;
-}
-.blessing-name {
-  font-weight: 600;
-  color: var(--navy);
-}
-
 /* === 祝福牆 === */
 .blessing-wall {
   padding: 2.5rem 1rem 2rem;
@@ -902,7 +882,6 @@ body {
     const statusEl = document.getElementById('claim-status');
     const progressFill = document.getElementById('progressFill');
     const sections = document.querySelectorAll('.category-section[data-gift]');
-    const pills = document.querySelectorAll('.cat-pill');
     let claimedCount = 0;
     const totalSections = sections.length;
 
@@ -910,33 +889,25 @@ body {
       const gift = sec.getAttribute('data-gift');
       if (!gift) return;
 
-      // Direct match (new form format)
       let matchedClaims = claims[gift];
-      let matchedMessages = messages[gift] || [];
 
       // Legacy format matching: try model number overlap, then Chinese keyword fallback
       if (!matchedClaims) {
         for (const key in claims) {
-          // Step 1: Try hyphenated model numbers (MR-CGX33EY-GBK, MW3-SAC24SE)
           const giftHyphen = gift.match(/[A-Z0-9]+[\-][A-Z0-9]+/g) || [];
           const keyHyphen = key.match(/[A-Z0-9]+[\-][A-Z0-9]+/g) || [];
           if (giftHyphen.length > 0 && keyHyphen.length > 0 && giftHyphen.some(m => keyHyphen.includes(m))) {
             if (!matchedClaims) matchedClaims = [];
             matchedClaims = matchedClaims.concat(claims[key]);
-            if (messages[key]) matchedMessages = matchedMessages.concat(messages[key]);
             continue;
           }
-          // Step 2: If neither has hyphenated models, fall back to Chinese keyword overlap
-          // (handles product swaps like PAX 衣櫃 → KLEPPSTAD 衣櫃)
           if (giftHyphen.length === 0 && keyHyphen.length === 0) {
             const giftCn = gift.match(/[\u4e00-\u9fff]{2,}/g) || [];
             const keyCn = key.match(/[\u4e00-\u9fff]{2,}/g) || [];
-            // Check substring overlap (e.g., "衣櫃" in key matches "趟門衣櫃" in gift)
             const hasCnOverlap = giftCn.some(gc => keyCn.some(kc => gc.includes(kc) || kc.includes(gc)));
             if (hasCnOverlap) {
               if (!matchedClaims) matchedClaims = [];
               matchedClaims = matchedClaims.concat(claims[key]);
-              if (messages[key]) matchedMessages = matchedMessages.concat(messages[key]);
             }
           }
         }
@@ -955,30 +926,10 @@ body {
         btn.classList.add('claimed-badge');
       }
 
-      // Render blessings
-      if (matchedMessages.length > 0) {
-        // Remove existing blessing container if any
-        const existing = sec.querySelector('.blessing-container');
-        if (existing) existing.remove();
-
-        const container = document.createElement('div');
-        container.className = 'blessing-container';
-        matchedMessages.forEach(entry => {
-          const div = document.createElement('div');
-          div.className = 'blessing-msg';
-          div.innerHTML = '<span class="blessing-name">💝 ' + escapeHtml(entry.name) + '</span> ' + escapeHtml(entry.msg);
-          container.appendChild(div);
-        });
-        // Insert after the button
-        btn.parentNode.insertBefore(container, btn.nextSibling);
-      }
-
-      // Update pill
       const pill = document.querySelector('.cat-pill[data-cat="' + sec.getAttribute('data-category') + '"]');
       if (pill) pill.classList.add('claimed');
     });
 
-    // Progress
     const pct = totalSections > 0 ? Math.round((claimedCount / totalSections) * 100) : 0;
     if (progressFill) progressFill.style.width = pct + '%';
 
