@@ -1,15 +1,14 @@
-// Google Apps Script — 認購去重驗證 v2
+// Google Apps Script — 認購去重驗證 v3
 // 部署步驟：
 // 1. 打開 Google Sheet → 擴充功能 → Apps Script
 // 2. 貼上此腳本，儲存
 // 3. 觸發條件 → 新增觸發條件 → 函數: onFormSubmit → 事件類型: 表單提交
 // 4. 授權執行
 //
-// 功能：當新認購與已有認購的禮物相同時，標記重複的列並發送通知
-// v2 改進：
-//   - 自動偵測工作表名稱（從 e.source 取得實際觸發的 sheet）
-//   - 從表頭自動偵測欄位位置（不假設固定順序）
-//   - 僅完全匹配禮物名稱，不進行模糊匹配
+// v3 改進：
+//   - 使用固定欄位映射（與網頁 SHEET_TABS 一致），避免 auto-detect 因重複表頭錯位
+//   - e.values 欄位不足時，自動 fallback 到 sheet data 讀取
+//   - 保留 auto-detect 作為未知工作表的 fallback
 
 const SPREADSHEET_ID = '1kqfMw6StVhgJ-c3VN7JLDCmuhOMZZ7moMZbGauNs5cA';
 
@@ -25,6 +24,13 @@ const VALID_GIFTS = [
   'Tefal 廚具',
 ];
 
+// 固定欄位映射（0-based index，與網頁 index.html 的 SHEET_TABS 一致）
+const FIXED_COLUMN_MAP = {
+  '表單回覆 2':     { nameCol: 1, giftCol: 4, msgCol: 3 },
+  '表單回覆 1':     { nameCol: 2, giftCol: 1, msgCol: 3 },
+  'Form Responses 1': { nameCol: 2, giftCol: 1, msgCol: 3 },
+};
+
 function onFormSubmit(e) {
   if (!e || !e.values) return;
 
@@ -35,7 +41,6 @@ function onFormSubmit(e) {
   const data = sheet.getDataRange().getValues();
   if (data.length < 2) return;
 
-  // 從表頭自動偵測欄位
   const headers = data[0].map(h => String(h).trim());
   const colMap = detectColumns(headers, sheetName);
   if (!colMap) {
@@ -43,17 +48,33 @@ function onFormSubmit(e) {
     return;
   }
 
-  const newRow = e.values;
   const newRowIdx = e.range ? e.range.getRow() : -1;
   if (newRowIdx < 0) return;
+
+  // 從 e.values 讀取新列資料；若欄位不足則 fallback 到 sheet data
+  let newRow = e.values;
+  const maxCol = Math.max(colMap.nameCol, colMap.giftCol, colMap.msgCol);
+  if (newRow.length <= maxCol) {
+    Logger.log(`⚠️ e.values 欄位不足（${newRow.length} < ${maxCol + 1}），改用 sheet data — 工作表: ${sheetName}`);
+    if (newRowIdx >= 1 && newRowIdx <= data.length) {
+      newRow = data[newRowIdx - 1];
+    } else {
+      Logger.log(`⚠️ newRowIdx ${newRowIdx} 超出範圍，放棄處理`);
+      return;
+    }
+  }
 
   const newName = String(newRow[colMap.nameCol] || '').trim();
   const newGift = String(newRow[colMap.giftCol] || '').trim();
   const newMsg = String(newRow[colMap.msgCol] || '').trim();
 
-  if (!newName || !newGift) return;
+  Logger.log(`📋 新認購 — name: "${newName}", gift: "${newGift}", msg: "${newMsg}", row: ${newRowIdx}, sheet: ${sheetName}`);
 
-  // 只對已知的禮物選項進行去重
+  if (!newName || !newGift) {
+    Logger.log(`⚠️ 姓名或禮物為空，跳過`);
+    return;
+  }
+
   if (!isValidGift(newGift)) {
     Logger.log(`ℹ️ 非標準禮物選項，跳過去重: "${newGift}"`);
     return;
@@ -69,11 +90,10 @@ function onFormSubmit(e) {
     const existingMsg = String(data[i][colMap.msgCol] || '').trim();
 
     // 跳過已取消的列
-    if (existingMsg.includes('已取消')) continue;
+    if (existingMsg.includes('已取消') || existingMsg.includes('CANCELLED')) continue;
 
     // 完全匹配禮物名稱
     if (existingGift && existingGift === newGift) {
-      // 發現重複！標記新列為已取消
       const cancelMsg = `⚠️ 已被 ${existingName} 認購，此筆已取消`;
       sheet.getRange(newRowIdx, colMap.msgCol + 1).setValue(cancelMsg);
 
@@ -82,24 +102,29 @@ function onFormSubmit(e) {
     }
   }
 
+  // 沒找到重複 → 標記為已接受
+  sheet.getRange(newRowIdx, colMap.msgCol + 1).setValue('✅');
   Logger.log(`✅ 新認購已接受：${newName} → ${newGift}`);
 }
 
-// 從表頭偵測欄位位置
+// 從表頭偵測欄位位置（fallback，僅在固定映射找不到時使用）
 function detectColumns(headers, sheetName) {
+  // 優先使用固定映射
+  if (FIXED_COLUMN_MAP[sheetName]) {
+    return FIXED_COLUMN_MAP[sheetName];
+  }
+
   let nameCol = -1, giftCol = -1, msgCol = -1;
 
   for (let i = 0; i < headers.length; i++) {
     const h = headers[i];
-    // 姓名欄位
     if (h === '姓名' || h === '你的名字' || h.includes('名字')) {
       nameCol = i;
     }
-    // 禮物欄位（優先選擇第二個出現的選擇禮品，因為表單回覆 2 有兩個）
-    if (h === '選擇禮品' || h === '你要認購的禮物' || h.includes('禮物')) {
-      giftCol = i; // 會被覆蓋，最後一個匹配的是第二個選擇禮品
+    // 遇到重複表頭時，只取 FIRST 個匹配
+    if (giftCol < 0 && (h === '選擇禮品' || h === '你要認購的禮物' || h.includes('禮物'))) {
+      giftCol = i;
     }
-    // 留言欄位
     if (h === '留言' || h === '留言／祝福（可選）' || h === '留言／祝福') {
       msgCol = i;
     }
@@ -110,6 +135,7 @@ function detectColumns(headers, sheetName) {
     return null;
   }
 
+  Logger.log(`⚠️ 使用 auto-detect fallback — ${sheetName}: nameCol=${nameCol}, giftCol=${giftCol}, msgCol=${msgCol}`);
   return { nameCol, giftCol, msgCol };
 }
 
