@@ -431,7 +431,7 @@ body {
 .category-section.claimed .product-card { opacity: 0.65; }
 .category-section.claimed .category-header .icon { opacity: 0.5; }
 
-/* === Blessings === */
+/* === Blessings (per-item) === */
 .blessing-container {
   margin: 0.75rem 0 0;
   padding: 0;
@@ -449,6 +449,65 @@ body {
 .blessing-name {
   font-weight: 600;
   color: var(--navy);
+}
+
+/* === 祝福牆 === */
+.blessing-wall {
+  padding: 2.5rem 1rem 2rem;
+  background: linear-gradient(180deg, var(--white) 0%, var(--blush) 100%);
+}
+.blessing-wall .section-title {
+  text-align: center;
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: var(--navy);
+  margin-bottom: 0.3rem;
+  font-family: var(--font-serif);
+}
+.blessing-wall .section-subtitle {
+  text-align: center;
+  font-size: 0.85rem;
+  color: var(--sage);
+  margin-bottom: 1.5rem;
+}
+.blessing-wall-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 0.75rem;
+  max-width: 800px;
+  margin: 0 auto;
+}
+.wall-msg {
+  padding: 0.75rem 1rem;
+  background: var(--white);
+  border-radius: 8px;
+  border-left: 3px solid var(--gold);
+  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+  line-height: 1.6;
+}
+.wall-msg .wall-name {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--navy);
+  margin-bottom: 0.25rem;
+}
+.wall-msg .wall-name::before {
+  content: '💝 ';
+}
+.wall-msg .wall-text {
+  font-size: 0.85rem;
+  color: var(--text);
+}
+.wall-msg .wall-gift-tag {
+  font-size: 0.7rem;
+  color: var(--sage);
+  margin-top: 0.4rem;
+  font-style: italic;
+}
+.wall-loading {
+  text-align: center;
+  color: var(--sage);
+  font-size: 0.85rem;
 }
 
 /* === Footer === */
@@ -547,6 +606,7 @@ body {
     <a href="#microwave" class="cat-pill" data-cat="microwave"><span class="pill-dot"></span>微波烤箱</a>
     <a href="#dehumidifier" class="cat-pill" data-cat="dehumidifier"><span class="pill-dot"></span>抽濕機</a>
     <a href="#tefal" class="cat-pill" data-cat="tefal"><span class="pill-dot"></span>Tefal 廚具</a>
+    <a href="#blessingWall" class="cat-pill" data-cat="blessing"><span class="pill-dot"></span>✦ 祝福牆</a>
   </div>
 </nav>
 
@@ -762,6 +822,15 @@ body {
       </div>
     </div>
     <button class="btn-claim" onclick="openClaim('tefal')">🎁 我要認購 — Tefal 廚具</button>
+  </section>
+
+  <!-- ===== 祝福牆 ===== -->
+  <section class="blessing-wall" id="blessingWall">
+    <div class="section-title">✦ 祝福牆 ✦</div>
+    <div class="section-subtitle">留下你的祝福與心意</div>
+    <div class="blessing-wall-grid" id="blessingWallGrid">
+      <div class="wall-loading" id="wallLoading">🔄 載入中...</div>
+    </div>
   </section>
 
 </main>
@@ -988,7 +1057,40 @@ body {
         }
       });
       applyClaims(allClaims, allMessages, totalRows);
+      renderBlessingWall(allMessages);
     });
+  }
+
+  // === 祝福牆渲染 ===
+  function renderBlessingWall(messages) {
+    const grid = document.getElementById('blessingWallGrid');
+    if (!grid) return;
+
+    // Collect ALL messages across all gifts
+    const allEntries = [];
+    for (const gift in messages) {
+      messages[gift].forEach(function(entry) {
+        allEntries.push({ name: entry.name, msg: entry.msg, gift: gift });
+      });
+    }
+
+    if (allEntries.length === 0) {
+      grid.innerHTML = '<div class="wall-loading">暫時沒有留言，歡迎寫下你的祝福 ❤️</div>';
+      return;
+    }
+
+    // Sort by most recent first (last submitted = last in array)
+    allEntries.reverse();
+
+    var html = '';
+    allEntries.forEach(function(entry) {
+      html += '<div class="wall-msg">';
+      html += '<div class="wall-name">' + escapeHtml(entry.name) + '</div>';
+      html += '<div class="wall-text">' + escapeHtml(entry.msg) + '</div>';
+      html += '<div class="wall-gift-tag">🎁 ' + escapeHtml(entry.gift) + '</div>';
+      html += '</div>';
+    });
+    grid.innerHTML = html;
   }
 
   // === Claim Action ===
