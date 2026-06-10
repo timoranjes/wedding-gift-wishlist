@@ -102,9 +102,9 @@ function onFormSubmit(e) {
     }
   }
 
-  // 沒找到重複 → 標記為已接受
-  sheet.getRange(newRowIdx, colMap.msgCol + 1).setValue('✅');
-  Logger.log(`✅ 新認購已接受：${newName} → ${newGift}`);
+  // 沒找到重複 → 不覆蓋留言欄位（保留用戶填寫的實際祝福內容）
+  // 網頁端判斷邏輯：只要 msg 不含「已取消」/「CANCELLED」即視為有效認購
+  Logger.log(`✅ 新認購已接受：${newName} → ${newGift}，留言: "${newMsg}"`);
 }
 
 // 從表頭偵測欄位位置（fallback，僅在固定映射找不到時使用）
